@@ -1,20 +1,31 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, } from 'react-native';
+import BottomTabNavigator from './navigation/BottomTabNavigator';
+import { NavigationContainer } from '@react-navigation/native';
+import SplashScreen from './screens/SplashScreen';
+import * as eva from '@eva-design/eva';
+import { ApplicationProvider, Layout, Text } from '@ui-kitten/components';
 
-export default function App() {
+
+const App = () => {
+  const [isShowSplash, setIsShowSplash] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsShowSplash(false);
+    }, 1000);
+
+    // Cleanup timer on component unmount
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <ApplicationProvider {...eva} theme={eva.light}>
+      <NavigationContainer>
+        {isShowSplash ? <SplashScreen /> : <BottomTabNavigator />}
+      </NavigationContainer>
+    </ApplicationProvider>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
