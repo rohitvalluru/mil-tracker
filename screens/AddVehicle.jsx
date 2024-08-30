@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import InputComponent from '../components/InputComponent';
 import useStore from '../store/store';
 import DropdownComponent from '../components/DropdownComponent';
@@ -12,9 +12,18 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 const AddVehicle = () => {
   const navigation = useNavigation();
 
-  const { vehicleName, engineCC, vehicleType, setVehicleType, setVehicleName, setEngineCC, imageUri, addVehicle } = useStore();
+  const { vehicleName, engineCC, vehicleType, setVehicleType, setVehicleName, setEngineCC, imageUri, addVehicle, setImageUri } = useStore();
 
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
+
+  useFocusEffect(
+    useCallback(() => {
+      setVehicleName('');
+      setEngineCC('');
+      setVehicleType('');
+      setImageUri(null);
+    }, [])
+  );
 
   useEffect(() => {
     // Check if all fields are filled
