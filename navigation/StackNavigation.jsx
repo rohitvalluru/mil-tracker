@@ -8,7 +8,7 @@ const HomeStack = createStackNavigator();
 
 export default function HomeStackScreen() {
   return (
-    <HomeStack.Navigator>
+    <HomeStack.Navigator screenOptions={{headerShown:false}}>
       <HomeStack.Screen name="HomeMain" component={HomeScreen} />
       <HomeStack.Screen name="AddVehicle" component={AddVehicle} />
       <HomeStack.Screen name="VehicleAddedScreen" component={VehicleAddedScreen} />

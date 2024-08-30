@@ -5,11 +5,14 @@ import InputComponent from '../components/InputComponent';
 import useStore from '../store/store';
 import DropdownComponent from '../components/DropdownComponent';
 import CircularImagePicker from '../components/ImagePicker';
+import { LinearGradient } from 'expo-linear-gradient';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
 
 const AddVehicle = () => {
   const navigation = useNavigation();
 
-  const { vehicleName, engineCC, vehicleType, setVehicleType, setVehicleName, setEngineCC, imageUri } = useStore();
+  const { vehicleName, engineCC, vehicleType, setVehicleType, setVehicleName, setEngineCC, imageUri, addVehicle } = useStore();
 
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
 
@@ -23,11 +26,23 @@ const AddVehicle = () => {
   }, [vehicleName, engineCC, vehicleType, imageUri]);
   
   const handleAddVehicle = () => {
+    addVehicle({
+      vehicleName,
+      engineCC,
+      vehicleType,
+      imageUri
+    });
     navigation.navigate('VehicleAddedScreen');
   };
+
+  const handleCancel = () =>{
+    navigation.navigate('HomeMain');
+  }
   
   return (
-    <View style={styles.container} className="mt-20 bg-white w-full h-full">
+    <SafeAreaView>
+    <View className="bg-red-500">
+    <LinearGradient style={styles.container} colors={['#83a4d4', '#FFFDE4']} className="mt-10 bg-white w-full h-full">
         <View className="flex justify-center items-center">
             <Text className="text-sky-900 text-2xl font-medium text-center mt-5">Add Vehicle</Text>           
               <CircularImagePicker/>
@@ -44,7 +59,8 @@ const AddVehicle = () => {
         onChangeText={setEngineCC}
       />
       <View className="flex flex-row justify-between w-80 mt-14">
-          <TouchableOpacity className="flex flex-row justify-center items-center h-14 w-36 text-sky-900 rounded-xl border">
+          <TouchableOpacity className="flex flex-row justify-center items-center h-14 w-36 text-sky-900 rounded-xl border"
+          onPress={handleCancel}>
             <Text className="text-sky-900 text-base font-semibold">Cancel</Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -56,7 +72,10 @@ const AddVehicle = () => {
           </TouchableOpacity>
         </View>
         </View>
+  
+    </LinearGradient>
     </View>
+    </SafeAreaView>
   );
 };
 
