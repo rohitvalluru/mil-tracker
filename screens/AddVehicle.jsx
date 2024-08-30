@@ -60,7 +60,7 @@ const AddVehicle = () => {
         value={vehicleName}
         onChangeText={setVehicleName}
       />
-      <DropdownComponent/>
+      <DropdownComponent useLocalStorage={false}/>
       <InputComponent
         placeholder="Engine CC"
         keyboardType="numeric"

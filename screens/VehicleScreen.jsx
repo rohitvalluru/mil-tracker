@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import Card from '../components/Card';
 import useStore from '../store/store';
+import NoVehicleComponent from '../components/NoVehicleComponent';
 
 const VehicleScreen = () => {
   const {vehicles} = useStore();
@@ -22,11 +23,15 @@ const VehicleScreen = () => {
         colors={['#83a4d4', '#FFFDE4']} className="h-screen w-screen"
       >
         <Text>HomeScreen</Text>
+        {vehicles.length > 0 ? (
         <FlatList
           data={vehicles}
           renderItem={renderItem}
           keyExtractor={(item, index)=> index.toString()}
         />
+        ) : (
+          <NoVehicleComponent/>
+        )}
       </LinearGradient>
     </SafeAreaView>
   )
