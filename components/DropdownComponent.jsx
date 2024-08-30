@@ -42,7 +42,7 @@ const DropdownComponent = () => {
           fontWeight: 'bold'
         }}
         textStyle={{
-          fontWeight: 'bold', // Make the selected value bold
+          // fontWeight: 'bold', // Make the selected value bold
           fontSize: 16,
         }}
         onChangeValue={(value) => {

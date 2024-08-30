@@ -6,6 +6,7 @@ import VehicleScreen from '../screens/VehicleScreen';
 import Entypo from '@expo/vector-icons/Entypo';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import HomeStackScreen from './StackNavigation';
 
 
 const Tab = createBottomTabNavigator()
@@ -13,7 +14,7 @@ const Tab = createBottomTabNavigator()
 const BottomTabNavigator = ()=> {
   return (
     <Tab.Navigator screenOptions={{headerShown:false}}>
-      <Tab.Screen name="Home" component={HomeScreen} options={{tabBarIcon:({color, size})=>(
+      <Tab.Screen name="Home" component={HomeStackScreen} options={{tabBarIcon:({color, size})=>(
         <Entypo name="home" size={28} color="black" />
       )}}/>
       <Tab.Screen name="Refuelling" component={RefuellingScreen} options={{tabBarIcon:({color, size})=>(

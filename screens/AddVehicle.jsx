@@ -1,23 +1,36 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
+import React, {useState, useEffect} from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import InputComponent from '../components/InputComponent';
 import useStore from '../store/store';
 import DropdownComponent from '../components/DropdownComponent';
-import ButtonComponent from '../components/ButtonComponent';
-import * as ImagePicker from 'expo-image-picker';
+import CircularImagePicker from '../components/ImagePicker';
 
 const AddVehicle = () => {
-  const { vehicleName, engineCC, vehicleType, setVehicleType, setVehicleName, setEngineCC } = useStore();
-  
+  const navigation = useNavigation();
 
+  const { vehicleName, engineCC, vehicleType, setVehicleType, setVehicleName, setEngineCC, imageUri } = useStore();
+
+  const [isButtonEnabled, setIsButtonEnabled] = useState(false);
+
+  useEffect(() => {
+    // Check if all fields are filled
+    if (vehicleName && engineCC && vehicleType && imageUri) {
+      setIsButtonEnabled(true);
+    } else {
+      setIsButtonEnabled(false);
+    }
+  }, [vehicleName, engineCC, vehicleType, imageUri]);
+  
+  const handleAddVehicle = () => {
+    navigation.navigate('VehicleAddedScreen');
+  };
+  
   return (
     <View style={styles.container} className="mt-20 bg-white w-full h-full">
         <View className="flex justify-center items-center">
             <Text className="text-sky-900 text-2xl font-medium text-center mt-5">Add Vehicle</Text>           
-            <View className="h-40 w-40 rounded-full mt-10 bg-black justify-center items-center">
-                <FontAwesome name="photo" size={28} color="white" />
-            </View>
+              <CircularImagePicker/>
             <InputComponent
         placeholder="Vehicle Name"
         value={vehicleName}
@@ -34,7 +47,11 @@ const AddVehicle = () => {
           <TouchableOpacity className="flex flex-row justify-center items-center h-14 w-36 text-sky-900 rounded-xl border">
             <Text className="text-sky-900 text-base font-semibold">Cancel</Text>
           </TouchableOpacity>
-          <TouchableOpacity className="flex flex-row justify-center items-center h-14 w-36 bg-sky-900 rounded-xl">
+          <TouchableOpacity
+            className={`flex flex-row justify-center items-center h-14 w-36 rounded-xl ${isButtonEnabled ? 'bg-sky-900' : 'bg-gray-400'}`}
+            disabled={!isButtonEnabled}
+            onPress={handleAddVehicle}
+          >
             <Text className="text-white text-base font-semibold">Add Vehicle</Text>
           </TouchableOpacity>
         </View>
@@ -56,4 +73,3 @@ const styles = StyleSheet.create({
 });
 
 export default AddVehicle;
-
