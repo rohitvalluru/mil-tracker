@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import useStore from '../store/store';
 
-const DropdownComponent = ({ useLocalStorage = false }) => {
+const DropdownComponent = ({ useLocalStorage = false, onChangeValue }) => {
   const { vehicleType, setVehicleType, vehicles } = useStore(); // Zustand state management
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState([
@@ -13,6 +13,7 @@ const DropdownComponent = ({ useLocalStorage = false }) => {
     { label: 'Other', value: 'Other' },
   ]);
 
+  // Populate dropdown with vehicle names from Zustand (or local storage)
   useEffect(() => {
     if (useLocalStorage) {
       const vehicleOptions = vehicles.map((vehicle) => ({
@@ -30,7 +31,13 @@ const DropdownComponent = ({ useLocalStorage = false }) => {
         value={vehicleType}
         items={items}
         setOpen={setOpen}
-        setValue={(callback) => setVehicleType(callback())} // Corrected to ensure the function works
+        setValue={(callback) => {
+          const selectedValue = callback();
+          setVehicleType(selectedValue); // Update Zustand state
+          if (onChangeValue) {
+            onChangeValue(selectedValue); // Trigger the onChangeValue callback
+          }
+        }}
         setItems={setItems}
         containerStyle={{ height: 40 }}
         style={{
@@ -45,18 +52,14 @@ const DropdownComponent = ({ useLocalStorage = false }) => {
           borderWidth: 1,
           borderRadius: 8,
         }}
-        placeholder="Vehicle Type"
+        placeholder="Select Vehicle"
         placeholderStyle={{
           color: 'gray',
           fontSize: 17,
           fontWeight: 'bold'
         }}
         textStyle={{
-          // fontWeight: 'bold', // Make the selected value bold
           fontSize: 16,
-        }}
-        onChangeValue={(value) => {
-          setVehicleType(value); // Update Zustand state
         }}
       />
     </View>
