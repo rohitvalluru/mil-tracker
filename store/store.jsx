@@ -3,12 +3,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { persist, createJSONStorage } from 'zustand/middleware';
 
 const useStore = create(persist(
-  (set) => ({
+  (set, get) => ({
     vehicles: [],
     vehicleName: '',
     engineCC: '',
     vehicleType: '',
     imageUri: '',
+    refuelRecords: [],
 
     setVehicleName: (name) => set({ vehicleName: name }),
     setEngineCC: (cc) => set({ engineCC: cc }),
@@ -18,7 +19,13 @@ const useStore = create(persist(
     addVehicle: (vehicle) => set((state) => ({
       vehicles: [...state.vehicles, vehicle],
     })),
+
+    addRefuelRecord: (record) => set((state) => ({
+      refuelRecords: [...state.refuelRecords, record],
+    })),
+    clearRefuelRecords: () => set({ refuelRecords: [] }),
   }),
+  
   {
     name: 'vehicle-storage', // Key for AsyncStorage
     storage: createJSONStorage(() => AsyncStorage), // Use AsyncStorage
