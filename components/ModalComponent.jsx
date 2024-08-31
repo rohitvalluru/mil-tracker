@@ -1,7 +1,7 @@
-// ModalComponent.js
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Modal, TextInput } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import DropDownPicker from 'react-native-dropdown-picker';
 import useStore from '../store/store'; // Adjust the path as needed
 
 const ModalComponent = ({ visible, onClose }) => {
@@ -10,7 +10,10 @@ const ModalComponent = ({ visible, onClose }) => {
   const [refuelDate, setRefuelDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
 
-  const { addRefuelRecord } = useStore(); // Get the addRefuelRecord action
+  const [selectedVehicle, setSelectedVehicle] = useState(null);
+  const [openDropdown, setOpenDropdown] = useState(false); // For dropdown open state
+
+  const { vehicles, addRefuelRecord } = useStore();
 
   const handleAddRefuelling = () => {
     const refuelRecord = {
@@ -18,7 +21,9 @@ const ModalComponent = ({ visible, onClose }) => {
       liters,
       refuelDate,
     };
-    addRefuelRecord(refuelRecord);
+    if (selectedVehicle) {
+      addRefuelRecord(selectedVehicle, refuelRecord);
+    }
     onClose();
     setMoneySpent('');
     setLiters('');
@@ -30,6 +35,19 @@ const ModalComponent = ({ visible, onClose }) => {
       <View className="flex-1 justify-center items-center bg-black bg-opacity-50">
         <View className="bg-white p-6 rounded-lg w-80">
           <Text className="text-lg font-semibold mb-4 text-center">Add Refuelling</Text>
+          
+          <DropDownPicker
+            open={openDropdown} // Control whether dropdown is open
+            value={selectedVehicle} // Current selected value
+            items={vehicles.map((vehicle) => ({
+              label: vehicle.vehicleName,
+              value: vehicle.vehicleName, // Using vehicleName as the value and key
+            }))}
+            placeholder="Select Vehicle"
+            setOpen={setOpenDropdown} // Set dropdown open state
+            setValue={setSelectedVehicle} // Set selected vehicle
+            className="border border-gray-300 rounded-lg mb-4"
+          />
 
           <TextInput
             placeholder="Money Spent in Rs."

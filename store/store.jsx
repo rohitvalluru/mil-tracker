@@ -1,4 +1,5 @@
-import {create} from 'zustand';
+// store.js
+import { create } from 'zustand';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { persist, createJSONStorage } from 'zustand/middleware';
 
@@ -9,7 +10,7 @@ const useStore = create(persist(
     engineCC: '',
     vehicleType: '',
     imageUri: '',
-    refuelRecords: [],
+    refuelRecords: {}, // Use an object to map vehicle IDs to records
 
     setVehicleName: (name) => set({ vehicleName: name }),
     setEngineCC: (cc) => set({ engineCC: cc }),
@@ -20,12 +21,19 @@ const useStore = create(persist(
       vehicles: [...state.vehicles, vehicle],
     })),
 
-    addRefuelRecord: (record) => set((state) => ({
-      refuelRecords: [...state.refuelRecords, record],
+    addRefuelRecord: (vehicleId, record) => set((state) => ({
+      refuelRecords: {
+        ...state.refuelRecords,
+        [vehicleId]: [...(state.refuelRecords[vehicleId] || []), record],
+      },
     })),
-    clearRefuelRecords: () => set({ refuelRecords: [] }),
+    clearRefuelRecordsForVehicle: (vehicleId) => set((state) => ({
+      refuelRecords: {
+        ...state.refuelRecords,
+        [vehicleId]: [],
+      },
+    })),
   }),
-  
   {
     name: 'vehicle-storage', // Key for AsyncStorage
     storage: createJSONStorage(() => AsyncStorage), // Use AsyncStorage

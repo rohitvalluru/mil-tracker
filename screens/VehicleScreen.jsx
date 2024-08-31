@@ -28,7 +28,7 @@ const VehicleScreen = () => {
   const renderFooter = () => (
     <View className="items-center p-4">
       <TouchableOpacity
-        className="flex flex-row justify-center items-center h-12 w-36 bg-sky-900 rounded-xl"
+        className="flex flex-row justify-center items-center h-12 w-36 mt-5 bg-sky-900 rounded-xl"
         onPress={handleAddVehicleHome}
       >
         <Text className="text-white text-base font-semibold mr-2">
