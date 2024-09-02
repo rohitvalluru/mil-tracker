@@ -1,41 +1,44 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Modal, TextInput } from 'react-native';
+import { View, Text, TextInput, Button, Modal, TouchableOpacity } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import DropDownPicker from 'react-native-dropdown-picker';
-import useStore from '../store/store'; // Adjust the path as needed
+import useStore from '../store/store';
 
-const ModalComponent = ({ visible, onClose }) => {
-  const [moneySpent, setMoneySpent] = useState('');
-  const [liters, setLiters] = useState('');
-  const [refuelDate, setRefuelDate] = useState(new Date());
+const MileageModal = ({ visible, onClose, onSave}) => {
+  const [distance, setDistance] = useState('');
+  const [fuelUsed, setFuelUsed] = useState('');
+  const [date, setDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
-
   const [selectedVehicle, setSelectedVehicle] = useState(null);
-  const [openDropdown, setOpenDropdown] = useState(false); // For dropdown open state
+  const [openDropdown, setOpenDropdown] = useState(false);
+  const { vehicles } = useStore();
 
-  const { vehicles, addRefuelRecord } = useStore();
-
-  const handleAddRefuelling = () => {
-    const refuelRecord = {
-      moneySpent,
-      liters,
-      refuelDate,
-    };
-    if (selectedVehicle) {
-      addRefuelRecord(selectedVehicle, refuelRecord);
+  const handleSave = () => {
+    if (!selectedVehicle) {
+      alert("Please select a vehicle.");
+      return;
     }
+
+    const fuelData = {
+      vehicleId: selectedVehicle,
+      distance: parseFloat(distance),
+      fuelUsed: parseFloat(fuelUsed),
+      date: date.toISOString(),
+    };
+
+    console.log('Submitted Fuel Data:', fuelData);
+
+    onSave(fuelData);
     onClose();
-    setMoneySpent('');
-    setLiters('');
-    setRefuelDate(new Date());
   };
 
   return (
-    <Modal visible={visible} transparent={true} animationType="slide" onRequestClose={onClose}>
+    <Modal visible={visible} transparent={true} animationType="slide">
       <View className="flex-1 justify-center items-center bg-black bg-opacity-50">
-        <View className="bg-white p-6 rounded-lg w-80">
-          <Text className="text-lg font-semibold mb-4 text-center text-sky-900">Add Refuelling</Text>
-          
+        <View className="bg-white p-6 rounded-xl w-80">
+          <Text className="text-lg font-semibold mb-4 text-center text-sky-900">Add Fuel Data</Text>
+
+          {/* Dropdown for vehicle selection */}
           <DropDownPicker
             open={openDropdown} // Control whether dropdown is open
             value={selectedVehicle} // Current selected value
@@ -49,35 +52,35 @@ const ModalComponent = ({ visible, onClose }) => {
             className="border border-gray-300 rounded-lg mb-4"
           />
 
+          {/* Input fields for distance and fuel used */}
           <TextInput
-            placeholder="Money Spent in Rs."
+            value={distance}
+            onChangeText={setDistance}
+            placeholder="Distance Traveled (km)"
             keyboardType="numeric"
-            value={moneySpent}
-            onChangeText={setMoneySpent}
-            className="border border-gray-300 rounded-lg p-2 mb-4"
+            className="border rounded-md p-2 mb-4"
+          />
+          <TextInput
+            value={fuelUsed}
+            onChangeText={setFuelUsed}
+            placeholder="Fuel Used (liters)"
+            keyboardType="numeric"
+            className="border rounded-md p-2 mb-4"
           />
 
-          <TextInput
-            placeholder="Liters of Petrol"
-            keyboardType="numeric"
-            value={liters}
-            onChangeText={setLiters}
-            className="border border-gray-300 rounded-lg p-2 mb-4"
-          />
-
-          <TouchableOpacity onPress={() => setShowDatePicker(true)} className="border border-gray-300 rounded-lg p-2 mb-4">
-            <Text>{refuelDate.toDateString()}</Text>
+          {/* Date picker */}
+          <TouchableOpacity onPress={() => setShowDatePicker(true)} className="p-2 border rounded-md mb-4">
+            <Text>{date.toDateString()}</Text>
           </TouchableOpacity>
-
           {showDatePicker && (
             <DateTimePicker
-              value={refuelDate}
+              value={date}
               mode="date"
               display="default"
               onChange={(event, selectedDate) => {
                 setShowDatePicker(false);
                 if (selectedDate) {
-                  setRefuelDate(selectedDate);
+                  setDate(selectedDate);
                 }
               }}
             />
@@ -87,7 +90,7 @@ const ModalComponent = ({ visible, onClose }) => {
             <TouchableOpacity className="bg-red-500 p-2 rounded-lg" onPress={onClose}>
               <Text className="text-white">Cancel</Text>
             </TouchableOpacity>
-            <TouchableOpacity className="bg-sky-900 p-2 rounded-lg" onPress={handleAddRefuelling}>
+            <TouchableOpacity className="bg-sky-900 p-2 rounded-lg" onPress={handleSave}>
               <Text className="text-white">Submit</Text>
             </TouchableOpacity>
           </View>
@@ -95,6 +98,6 @@ const ModalComponent = ({ visible, onClose }) => {
       </View>
     </Modal>
   );
-};
+}
 
-export default ModalComponent;
+export default MileageModal;

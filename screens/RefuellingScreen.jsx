@@ -36,12 +36,7 @@ const RefuellingScreen = () => {
     <SafeAreaView>
       <LinearGradient colors={['#83a4d4', '#FFFDE4']} className="h-screen w-screen">
         <View className="justify-center items-center">
-        <DropdownComponent
-            useLocalStorage={false} // Use the store for dropdown data
-            onChangeValue={handleVehicleSelection}
-            placeholder="Select Vehicle"
-            options={vehicles.map(v => v.vehicleName)}
-          />
+        <DropdownComponent useLocalStorage={true} onChangeValue={handleVehicleSelection} placeholder="Choose Vehicle"/>
           <View className="mt-4">
             <FuelDataList records={records} />
           </View>

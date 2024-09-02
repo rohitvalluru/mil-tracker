@@ -27,6 +27,19 @@ const useStore = create(persist(
         [vehicleId]: [...(state.refuelRecords[vehicleId] || []), record],
       },
     })),
+
+    addFuelData: (data) => set((state) => {
+      const { vehicleId, distance, fuelUsed, date } = data;
+      const existingRecords = state.refuelRecords[vehicleId] || [];
+      const updatedRecords = [...existingRecords, { distance, fuelUsed, date }];
+      return {
+        refuelRecords: {
+          ...state.refuelRecords,
+          [vehicleId]: updatedRecords,
+        },
+      };
+    }),
+    
     clearRefuelRecordsForVehicle: (vehicleId) => set((state) => ({
       refuelRecords: {
         ...state.refuelRecords,
