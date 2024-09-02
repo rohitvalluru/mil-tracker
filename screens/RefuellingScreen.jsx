@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Text, View, TouchableOpacity, Alert } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Text, View, TouchableOpacity, Alert, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import useStore from '../store/store';
@@ -22,12 +22,24 @@ const RefuellingScreen = () => {
   const records = selectedVehicle ? refuelRecords[selectedVehicle.vehicleName] || [] : [];
 
   const handleClearRecords = () => {
+    if (!selectedVehicle) {
+      Alert.alert("Error", "Please select a vehicle first.");
+      return;
+    }
+
     Alert.alert(
       "Confirm",
-      "Are you sure you want to delete all Fuel Records?",
+      "Are you sure you want to delete all Fuel Records for this vehicle?",
       [
         { text: "Cancel" },
-        { text: "OK", onPress: () => clearRefuelRecordsForVehicle() }
+        { 
+          text: "OK", 
+          onPress: () => {
+            clearRefuelRecordsForVehicle(selectedVehicle.vehicleName);
+            // Force a re-render by updating the state
+            setSelectedVehicle({...selectedVehicle});
+          }
+        }
       ]
     );
   };
@@ -35,8 +47,13 @@ const RefuellingScreen = () => {
   return (
     <SafeAreaView>
       <LinearGradient colors={['#83a4d4', '#FFFDE4']} className="h-screen w-screen">
+    <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: 70 }}>
         <View className="justify-center items-center">
-        <DropdownComponent useLocalStorage={true} onChangeValue={handleVehicleSelection} placeholder="Choose Vehicle"/>
+          <DropdownComponent 
+            useLocalStorage={true} 
+            onChangeValue={handleVehicleSelection} 
+            placeholder="Choose Vehicle"
+          />
           <View className="mt-4">
             <FuelDataList records={records} />
           </View>
@@ -61,6 +78,7 @@ const RefuellingScreen = () => {
             </Text>
           </TouchableOpacity>
         </View>
+    </ScrollView>
       </LinearGradient>
     </SafeAreaView>
   );

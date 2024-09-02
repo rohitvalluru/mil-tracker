@@ -40,12 +40,11 @@ const useStore = create(persist(
       };
     }),
     
-    clearRefuelRecordsForVehicle: (vehicleId) => set((state) => ({
-      refuelRecords: {
-        ...state.refuelRecords,
-        [vehicleId]: [],
-      },
-    })),
+    clearRefuelRecordsForVehicle: (vehicleId) => set((state) => {
+      const newRefuelRecords = { ...state.refuelRecords };
+      delete newRefuelRecords[vehicleId];
+      return { refuelRecords: newRefuelRecords };
+    }),
   }),
   {
     name: 'vehicle-storage', // Key for AsyncStorage
