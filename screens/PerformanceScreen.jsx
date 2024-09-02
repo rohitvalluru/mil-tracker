@@ -24,7 +24,7 @@ const PerformanceScreen = () => {
       <View className="flex-1 justify-center items-center">
       
       <TouchableOpacity
-            className="flex flex-row justify-center items-center h-14 w-40 bg-sky-900 mt-10 rounded-xl"
+            className="flex flex-row justify-center items-center h-14 w-40 bg-sky-900 mt-32 rounded-xl"
             onPress={() => setModalVisible(true)}
           >
             <Text className="text-white text-base font-semibold mr-2">

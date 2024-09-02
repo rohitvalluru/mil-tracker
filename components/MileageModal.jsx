@@ -4,7 +4,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import DropDownPicker from 'react-native-dropdown-picker';
 import useStore from '../store/store';
 
-const MileageModal = ({ visible, onClose, onSave}) => {
+const MileageModal = ({ visible, onClose, onSave }) => {
   const [distance, setDistance] = useState('');
   const [fuelUsed, setFuelUsed] = useState('');
   const [date, setDate] = useState(new Date());
@@ -14,11 +14,6 @@ const MileageModal = ({ visible, onClose, onSave}) => {
   const { vehicles } = useStore();
 
   const handleSave = () => {
-    if (!selectedVehicle) {
-      alert("Please select a vehicle.");
-      return;
-    }
-
     const fuelData = {
       vehicleId: selectedVehicle,
       distance: parseFloat(distance),
@@ -26,11 +21,12 @@ const MileageModal = ({ visible, onClose, onSave}) => {
       date: date.toISOString(),
     };
 
-    console.log('Submitted Fuel Data:', fuelData);
-
     onSave(fuelData);
     onClose();
   };
+
+  // Check if all fields are filled
+  const isFormComplete = distance && fuelUsed && selectedVehicle && date;
 
   return (
     <Modal visible={visible} transparent={true} animationType="slide">
@@ -90,7 +86,11 @@ const MileageModal = ({ visible, onClose, onSave}) => {
             <TouchableOpacity className="bg-red-500 p-2 rounded-lg" onPress={onClose}>
               <Text className="text-white">Cancel</Text>
             </TouchableOpacity>
-            <TouchableOpacity className="bg-sky-900 p-2 rounded-lg" onPress={handleSave}>
+            <TouchableOpacity
+              className={`p-2 rounded-lg ${isFormComplete ? 'bg-sky-900' : 'bg-gray-400'}`}
+              onPress={handleSave}
+              disabled={!isFormComplete}
+            >
               <Text className="text-white">Submit</Text>
             </TouchableOpacity>
           </View>

@@ -30,6 +30,9 @@ const ModalComponent = ({ visible, onClose }) => {
     setRefuelDate(new Date());
   };
 
+  // Check if all fields are filled
+  const isFormComplete = moneySpent && liters && selectedVehicle && refuelDate;
+
   return (
     <Modal visible={visible} transparent={true} animationType="slide" onRequestClose={onClose}>
       <View className="flex-1 justify-center items-center bg-black bg-opacity-50">
@@ -87,7 +90,12 @@ const ModalComponent = ({ visible, onClose }) => {
             <TouchableOpacity className="bg-red-500 p-2 rounded-lg" onPress={onClose}>
               <Text className="text-white">Cancel</Text>
             </TouchableOpacity>
-            <TouchableOpacity className="bg-sky-900 p-2 rounded-lg" onPress={handleAddRefuelling}>
+
+            <TouchableOpacity
+              className={`p-2 rounded-lg ${isFormComplete ? 'bg-sky-900' : 'bg-gray-400'}`}
+              onPress={handleAddRefuelling}
+              disabled={!isFormComplete}
+            >
               <Text className="text-white">Submit</Text>
             </TouchableOpacity>
           </View>
