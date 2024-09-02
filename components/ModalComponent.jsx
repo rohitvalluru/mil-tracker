@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Modal, TextInput } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -25,13 +25,21 @@ const ModalComponent = ({ visible, onClose }) => {
       addRefuelRecord(selectedVehicle, refuelRecord);
     }
     onClose();
-    setMoneySpent('');
-    setLiters('');
-    setRefuelDate(new Date());
   };
 
   // Check if all fields are filled
   const isFormComplete = moneySpent && liters && selectedVehicle && refuelDate;
+
+  // Reset form fields when the modal is opened
+  useEffect(() => {
+    if (visible) {
+      setMoneySpent('');
+      setLiters('');
+      setRefuelDate(new Date());
+      setSelectedVehicle(null);
+      setOpenDropdown(false);
+    }
+  }, [visible]);
 
   return (
     <Modal visible={visible} transparent={true} animationType="slide" onRequestClose={onClose}>

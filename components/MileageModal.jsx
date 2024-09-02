@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, Modal, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, Modal, TouchableOpacity } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import DropDownPicker from 'react-native-dropdown-picker';
 import useStore from '../store/store';
@@ -13,6 +13,14 @@ const MileageModal = ({ visible, onClose, onSave }) => {
   const [openDropdown, setOpenDropdown] = useState(false);
   const { vehicles } = useStore();
 
+  const resetForm = () => {
+    setDistance('');
+    setFuelUsed('');
+    setDate(new Date());
+    setSelectedVehicle(null);
+    setOpenDropdown(false);
+  };
+
   const handleSave = () => {
     const fuelData = {
       vehicleId: selectedVehicle,
@@ -22,8 +30,15 @@ const MileageModal = ({ visible, onClose, onSave }) => {
     };
 
     onSave(fuelData);
+    resetForm();  // Reset form fields after saving
     onClose();
   };
+
+  useEffect(() => {
+    if (visible) {
+      resetForm();  // Reset form fields when the modal is opened
+    }
+  }, [visible]);
 
   // Check if all fields are filled
   const isFormComplete = distance && fuelUsed && selectedVehicle && date;
@@ -83,7 +98,7 @@ const MileageModal = ({ visible, onClose, onSave }) => {
           )}
 
           <View className="flex flex-row justify-between mt-4">
-            <TouchableOpacity className="bg-red-500 p-2 rounded-lg" onPress={onClose}>
+            <TouchableOpacity className="bg-red-500 p-2 rounded-lg" onPress={() => { resetForm(); onClose(); }}>
               <Text className="text-white">Cancel</Text>
             </TouchableOpacity>
             <TouchableOpacity
