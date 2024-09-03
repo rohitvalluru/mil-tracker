@@ -13,7 +13,7 @@ const App = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsShowSplash(false);
-    }, 1000);
+    }, );
 
     // Cleanup timer on component unmount
     return () => clearTimeout(timer);
