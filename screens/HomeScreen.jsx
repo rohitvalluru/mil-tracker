@@ -118,6 +118,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
 import EnterPasscodeScreen from "./EnterPasscodeScreen";
 import CreateAccountScreen from "./CreateAccountScreen";
+import UserLoginScreen from "./UserLoginScreen";
 
 const HomeScreen = () => {
   return (
@@ -126,7 +127,7 @@ const HomeScreen = () => {
         colors={["#83a4d4", "#FFFDE4"]}
         className="h-screen w-screen"
       >
-        <CreateAccountScreen />
+        <UserLoginScreen />
       </LinearGradient>
     </SafeAreaView>
   );

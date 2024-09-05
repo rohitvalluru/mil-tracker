@@ -5,19 +5,48 @@ import {
   TextInput,
   Pressable,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import useStore from "../store/store";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 
 const CreateAccountScreen = () => {
   const { name, nickname, email, setName, setNickname, setEmail } = useStore();
   const [isChecked, setIsChecked] = useState(false);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const navigation = useNavigation();
 
+  const handleContinuButton = () => {
+    navigation.navigate("EnterPasscodeScreen");
+  };
+
+  const handleBackButton = () => {
+    navigation.navigate("UserLoginScreen");
+  };
   const toggleCheckbox = () => {
     setIsChecked(!isChecked);
   };
+
+  useEffect(() => {
+    // Enable the "Continue" button only if all fields are filled and checkbox is checked
+    if (name && email && nickname && isChecked) {
+      setIsButtonDisabled(false);
+    } else {
+      setIsButtonDisabled(true);
+    }
+  }, [name, email, nickname, isChecked]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      // Reset the form fields to blank when the screen is focused (refreshed)
+      setName("");
+      setEmail("");
+      setNickname("");
+      setIsChecked(false);
+    }, [])
+  );
 
   return (
     <SafeAreaView className="flex-1">
@@ -26,7 +55,7 @@ const CreateAccountScreen = () => {
         className="h-screen w-screen"
       >
         <View className="flex-1 items-center">
-          <TouchableOpacity className="mr-72">
+          <TouchableOpacity className="mr-72" onPress={handleBackButton}>
             <FontAwesome name="long-arrow-left" size={36} color="black" />
           </TouchableOpacity>
           <Text className="text-2xl font-medium text-sky-800 mr-40 mt-10">
@@ -61,7 +90,7 @@ const CreateAccountScreen = () => {
               />
             </View>
           </View>
-          <View className="h-40 w-full bg-white absolute bottom-0">
+          <View className="h-40 w-full bg-white ">
             <View className="flex flex-row">
               <View className="flex-row items-center mt-5">
                 <Pressable
@@ -85,7 +114,13 @@ const CreateAccountScreen = () => {
               </View>
             </View>
             <View className="justify-center items-center">
-              <TouchableOpacity className="h-12 bg-sky-900 w-64 rounded-xl justify-center items-center mt-5">
+              <TouchableOpacity
+                disabled={isButtonDisabled}
+                onPress={handleContinuButton}
+                className={`h-12 w-64 rounded-xl justify-center items-center mt-5 ${
+                  isButtonDisabled ? "bg-gray-400" : "bg-sky-900"
+                }`}
+              >
                 <Text className="text-white font-semibold text-xl">
                   Continue
                 </Text>

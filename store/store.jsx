@@ -3,59 +3,71 @@ import { create } from 'zustand';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { persist, createJSONStorage } from 'zustand/middleware';
 
-const useStore = create(persist(
-  (set, get) => ({
-    vehicles: [],
-    vehicleName: '',
-    engineCC: '',
-    vehicleType: '',
-    imageUri: '',
-    refuelRecords: {}, // Use an object to map vehicle IDs to records
-    name:'',
-    nickname:'',
-    email:'',
-    setName:(name)=>set({name}),
-    setNickname:(nickname)=>set({nickname}),
-    setEmail: (email)=> set({email}),
+const useStore = create(
+  persist(
+    (set, get) => ({
+      vehicles: [],
+      vehicleName: "",
+      engineCC: "",
+      vehicleType: "",
+      imageUri: "",
+      refuelRecords: {}, // Use an object to map vehicle IDs to records
 
-    setVehicleName: (name) => set({ vehicleName: name }),
-    setEngineCC: (cc) => set({ engineCC: cc }),
-    setVehicleType: (type) => set({ vehicleType: type }),
-    setImageUri: (uri) => set({ imageUri: uri }),
+      name: "",
+      nickname: "",
+      email: "",
+      password: "",
+      setName: (name) => set({ name }),
+      setNickname: (nickname) => set({ nickname }),
+      setEmail: (email) => set({ email }),
+      setPassword: (password) => set({ password }),
 
-    addVehicle: (vehicle) => set((state) => ({
-      vehicles: [...state.vehicles, vehicle],
-    })),
+      setVehicleName: (name) => set({ vehicleName: name }),
+      setEngineCC: (cc) => set({ engineCC: cc }),
+      setVehicleType: (type) => set({ vehicleType: type }),
+      setImageUri: (uri) => set({ imageUri: uri }),
 
-    addRefuelRecord: (vehicleId, record) => set((state) => ({
-      refuelRecords: {
-        ...state.refuelRecords,
-        [vehicleId]: [...(state.refuelRecords[vehicleId] || []), record],
-      },
-    })),
+      addVehicle: (vehicle) =>
+        set((state) => ({
+          vehicles: [...state.vehicles, vehicle],
+        })),
 
-    addFuelData: (data) => set((state) => {
-      const { vehicleId, distance, fuelUsed, date } = data;
-      const existingRecords = state.refuelRecords[vehicleId] || [];
-      const updatedRecords = [...existingRecords, { distance, fuelUsed, date }];
-      return {
-        refuelRecords: {
-          ...state.refuelRecords,
-          [vehicleId]: updatedRecords,
-        },
-      };
+      addRefuelRecord: (vehicleId, record) =>
+        set((state) => ({
+          refuelRecords: {
+            ...state.refuelRecords,
+            [vehicleId]: [...(state.refuelRecords[vehicleId] || []), record],
+          },
+        })),
+
+      addFuelData: (data) =>
+        set((state) => {
+          const { vehicleId, distance, fuelUsed, date } = data;
+          const existingRecords = state.refuelRecords[vehicleId] || [];
+          const updatedRecords = [
+            ...existingRecords,
+            { distance, fuelUsed, date },
+          ];
+          return {
+            refuelRecords: {
+              ...state.refuelRecords,
+              [vehicleId]: updatedRecords,
+            },
+          };
+        }),
+
+      clearRefuelRecordsForVehicle: (vehicleId) =>
+        set((state) => {
+          const newRefuelRecords = { ...state.refuelRecords };
+          delete newRefuelRecords[vehicleId];
+          return { refuelRecords: newRefuelRecords };
+        }),
     }),
-    
-    clearRefuelRecordsForVehicle: (vehicleId) => set((state) => {
-      const newRefuelRecords = { ...state.refuelRecords };
-      delete newRefuelRecords[vehicleId];
-      return { refuelRecords: newRefuelRecords };
-    }),
-  }),
-  {
-    name: 'vehicle-storage', // Key for AsyncStorage
-    storage: createJSONStorage(() => AsyncStorage), // Use AsyncStorage
-  }
-));
+    {
+      name: "vehicle-storage", // Key for AsyncStorage
+      storage: createJSONStorage(() => AsyncStorage), // Use AsyncStorage
+    }
+  )
+);
 
 export default useStore;

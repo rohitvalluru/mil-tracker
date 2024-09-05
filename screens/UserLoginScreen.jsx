@@ -4,13 +4,16 @@ import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SignupSvg from "../components/SignupSvg";
 import { useNavigation } from "@react-navigation/native";
+import ProfileComponent from "../components/ProfileComponent";
+import AntDesign from "@expo/vector-icons/AntDesign";
 
-const Signup = () => {
+const UserLoginScreen = () => {
   const navigation = useNavigation();
 
-  const handleSignup = () => {
-    navigation.navigate("CreateAccountScreen");
-  };
+  const handleNewUser = ()=> {
+    navigation.navigate('CreateAccountScreen')
+  }
+
   return (
     <SafeAreaView>
       <LinearGradient
@@ -26,28 +29,20 @@ const Signup = () => {
             Mileage Tracker
           </Text>
           <Text className="font-medium text-lg mt-10 text-sky-900">
-            Create an account to get started
+            Select The Profile
           </Text>
-          <TouchableOpacity
-            className="bg-sky-900 h-11 w-56 rounded-lg justify-center mt-5"
-            onPress={handleSignup}
-          >
-            <Text className="text-white font-medium text-lg text-center">
-              Sign up
-            </Text>
+          <View className="mt-28">
+            <ProfileComponent />
+          </View>
+          <TouchableOpacity onPress={handleNewUser}>
+            <View className="bg-red-400 h-16 w-16 mt-20 rounded-full justify-center items-center">
+              <AntDesign name="plus" size={40} color="white" />
+            </View>
           </TouchableOpacity>
-          <View className="mt-10">
-            <SignupSvg />
-          </View>
-          <View className="w-80 -mt-5">
-            <Text className="text-xl font-medium  mt-10 text-sky-900 text-center">
-              Track your miles towards a prosperous financial journey!
-            </Text>
-          </View>
         </View>
       </LinearGradient>
     </SafeAreaView>
   );
 };
 
-export default Signup;
+export default UserLoginScreen;
