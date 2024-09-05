@@ -4,6 +4,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SignupSvg from "../components/SignupSvg";
 import { useNavigation } from "@react-navigation/native";
+import useStore from "../store/store";
 
 const Signup = () => {
   const navigation = useNavigation();

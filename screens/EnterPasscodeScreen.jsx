@@ -11,9 +11,7 @@ const EnterPasscodeScreen = () => {
   const inputRefs2 = [useRef(null), useRef(null), useRef(null), useRef(null)];
   const [passcode, setPasscode] = useState(["", "", "", ""]);
   const [confirmPasscode, setConfirmPasscode] = useState(["", "", "", ""]);
-
-  // Access Zustand store data
-  const { name, nickname, email, setPassword } = useStore();
+  const { addUser, name, nickname, email, password, setPassword } = useStore(); // Access setPassword from Zustand
   const navigation = useNavigation();
 
   const handleInputChange = (value, index, setInput, inputArray, refs) => {
@@ -37,17 +35,18 @@ const EnterPasscodeScreen = () => {
     const confirmPasscodeString = confirmPasscode.join("");
 
     if (passcodeString === confirmPasscodeString) {
-      setPassword(passcodeString); // Store the passcode
-
-      // Log user details and password
-      console.log("User Details:");
-      console.log(`Name: ${name}`);
-      console.log(`Nickname: ${nickname}`);
-      console.log(`Email: ${email}`);
-      console.log(`Password: ${passcodeString}`);
-
+      setPassword(passcodeString); // Store the passcode as a string
+      addUser({
+        name,
+        nickname,
+        email,
+        password: passcodeString, // Store passcode as string
+      });
+      // Clear the passcode state
+      setPasscode(["", "", "", ""]);
+      setConfirmPasscode(["", "", "", ""]);
       Alert.alert("Success", "Passcode set successfully!");
-      navigation.navigate("NextScreen"); // Replace with your target screen
+      navigation.navigate("UserLoginScreen");
     } else {
       Alert.alert("Error", "Passcodes do not match. Please try again.");
     }

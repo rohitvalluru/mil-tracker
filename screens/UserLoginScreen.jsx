@@ -1,18 +1,43 @@
-import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
-import React from "react";
+import { View, Text, TouchableOpacity, Image, StyleSheet, Alert } from "react-native";
+import React, { useEffect } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
-import SignupSvg from "../components/SignupSvg";
 import { useNavigation } from "@react-navigation/native";
 import ProfileComponent from "../components/ProfileComponent";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import useStore from "../store/store";
 
 const UserLoginScreen = () => {
   const navigation = useNavigation();
+  const { users, clearAllUsers } = useStore();
 
-  const handleNewUser = ()=> {
-    navigation.navigate('CreateAccountScreen')
-  }
+  const handleNewUser = () => {
+    navigation.navigate("CreateAccountScreen");
+  };
+
+  useEffect(() => {
+    console.log("Users from store:", users);
+  }, [users]);
+
+  const handleClearUsers = () => {
+    Alert.alert(
+      "Confirm",
+      "Are you sure you want to remove all user records?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "OK",
+          onPress: () => {
+            clearAllUsers();
+            Alert.alert("Success", "All user records have been cleared.");
+          },
+        },
+      ]
+    );
+  };
 
   return (
     <SafeAreaView>
@@ -31,13 +56,35 @@ const UserLoginScreen = () => {
           <Text className="font-medium text-lg mt-10 text-sky-900">
             Select The Profile
           </Text>
-          <View className="mt-28">
-            <ProfileComponent />
+
+          <View className="flex-wrap flex-row justify-center items-center mt-5">
+            {users.slice(0, 3).map((user, index) => (
+              <View key={index} className="mx-4 my-2">
+                <ProfileComponent name={user.name} />
+              </View>
+            ))}
           </View>
+          <View className="flex-wrap flex-row justify-center items-center mt-4">
+            {users.slice(3, 5).map((user, index) => (
+              <View key={index} className="mx-4 my-2">
+                <ProfileComponent name={user.name} />
+              </View>
+            ))}
+          </View>
+
           <TouchableOpacity onPress={handleNewUser}>
             <View className="bg-red-400 h-16 w-16 mt-20 rounded-full justify-center items-center">
               <AntDesign name="plus" size={40} color="white" />
             </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={handleClearUsers}
+            className="bg-red-600 h-12 w-64 rounded-xl justify-center items-center mt-5"
+          >
+            <Text className="text-white font-semibold text-xl">
+              Clear All Users
+            </Text>
           </TouchableOpacity>
         </View>
       </LinearGradient>

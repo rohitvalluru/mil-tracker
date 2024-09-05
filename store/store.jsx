@@ -1,7 +1,7 @@
 // store.js
-import { create } from 'zustand';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { persist, createJSONStorage } from 'zustand/middleware';
+import { create } from "zustand";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { persist, createJSONStorage } from "zustand/middleware";
 
 const useStore = create(
   persist(
@@ -17,6 +17,8 @@ const useStore = create(
       nickname: "",
       email: "",
       password: "",
+      users: [], // Array to store user profiles
+
       setName: (name) => set({ name }),
       setNickname: (nickname) => set({ nickname }),
       setEmail: (email) => set({ email }),
@@ -56,12 +58,12 @@ const useStore = create(
           };
         }),
 
-      clearRefuelRecordsForVehicle: (vehicleId) =>
-        set((state) => {
-          const newRefuelRecords = { ...state.refuelRecords };
-          delete newRefuelRecords[vehicleId];
-          return { refuelRecords: newRefuelRecords };
-        }),
+      addUser: (user) =>
+        set((state) => ({
+          users: [...state.users, user],
+        })),
+
+      clearAllUsers: () => set({ users: [] }),
     }),
     {
       name: "vehicle-storage", // Key for AsyncStorage
