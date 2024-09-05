@@ -63,6 +63,19 @@ const useStore = create(
           users: [...state.users, user],
         })),
 
+      loadUsers: async () => {
+        try {
+          const storedUsers = await AsyncStorage.getItem("users");
+          if (storedUsers) {
+            set({ users: JSON.parse(storedUsers) });
+          } else {
+            console.log("No users found in storage");
+          }
+        } catch (error) {
+          console.error("Failed to load users from AsyncStorage", error);
+        }
+      },
+
       clearAllUsers: () => set({ users: [] }),
     }),
     {

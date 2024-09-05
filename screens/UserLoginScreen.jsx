@@ -22,9 +22,9 @@ const UserLoginScreen = () => {
     navigation.navigate("CreateAccountScreen");
   };
 
-  useEffect(() => {
-    console.log("Users from store:", users);
-  }, [users]);
+  // useEffect(() => {
+  //   console.log("Users from store:", users);
+  // }, [users]);
 
   const handleClearUsers = () => {
     Alert.alert(
@@ -56,7 +56,7 @@ const UserLoginScreen = () => {
         colors={["#83a4d4", "#FFFDE4"]}
         className="h-screen w-screen"
       >
-        <View className="justify-center items-center -mt-5">
+        <View className="justify-center items-center mt-5">
           <Image
             source={require("../assets/Hugosave.webp")}
             className="h-32 w-32 rounded-full mt-10"
@@ -90,9 +90,12 @@ const UserLoginScreen = () => {
           </View>
 
           <TouchableOpacity onPress={handleNewUser}>
-            <View className="bg-red-400 h-16 w-16 mt-20 rounded-full justify-center items-center">
+            <View className="bg-blue-900 h-16 w-16 mt-20 rounded-full justify-center items-center">
               <AntDesign name="plus" size={40} color="white" />
             </View>
+            <Text className="text-center mt-2 font-medium text-sky-900">
+              Add User
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity

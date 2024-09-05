@@ -128,7 +128,7 @@ const HomeScreen = () => {
         colors={["#83a4d4", "#FFFDE4"]}
         className="h-screen w-screen"
       >
-        <UserLoginScreen />
+        {/* <UserLoginScreen /> */}
         {/* <LoginPasscodeScreen /> */}
       </LinearGradient>
     </SafeAreaView>

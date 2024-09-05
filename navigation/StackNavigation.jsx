@@ -20,7 +20,7 @@ export default function HomeStackScreen() {
         name="VehicleAddedScreen"
         component={VehicleAddedScreen}
       />
-      <HomeStack.Screen
+      {/* <HomeStack.Screen
         name="CreateAccountScreen"
         component={CreateAccountScreen}
       />
@@ -30,7 +30,7 @@ export default function HomeStackScreen() {
       />
       <HomeStack.Screen name="Signup" component={Signup} />
       <HomeStack.Screen name="UserLoginScreen" component={UserLoginScreen} />
-      <HomeStack.Screen name="LoginPasscodeScreen" component={LoginPasscodeScreen} />
+      <HomeStack.Screen name="LoginPasscodeScreen" component={LoginPasscodeScreen} /> */}
     </HomeStack.Navigator>
   );
 }

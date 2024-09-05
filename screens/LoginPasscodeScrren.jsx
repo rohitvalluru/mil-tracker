@@ -6,7 +6,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import useStore from "../store/store";
 
-const LoginPasscodeScreen = () => {
+const LoginPasscodeScreen = ({ setIsAuthenticated }) => {
   const inputRefs = [useRef(null), useRef(null), useRef(null), useRef(null)];
   const [passcode, setPasscode] = useState(["", "", "", ""]);
   const { users } = useStore();
@@ -32,7 +32,8 @@ const LoginPasscodeScreen = () => {
     if (passcodeString === user.password) {
       // Compare with the stored passcode
       Alert.alert("Success", "You are successfully logged in!");
-      navigation.navigate('UserLoginScreen')
+      setIsAuthenticated(true);
+      navigation.navigate("BottomTabs");
       // Navigate to the next screen or perform additional actions
     } else {
       Alert.alert("Error", "Invalid passcode. Please try again.");
@@ -45,11 +46,13 @@ const LoginPasscodeScreen = () => {
         colors={["#83a4d4", "#FFFDE4"]}
         className="h-screen w-screen"
       >
-        <View className="justify-center items-center">
-          <Text className="text-2xl font-medium text-sky-900 mt-10">
-           Welcome back!
+        <View className="justify-center items-center mt-12">
+          <Text className="text-2xl font-medium text-red-600 mt-10">
+            Welcome back!
           </Text>
-          <Text className="mt-16 text-lg font-medium text-sky-900">Enter your 4-Digit Passcode</Text>
+          <Text className="mt-16 text-lg font-medium text-sky-900">
+            Enter your 4-Digit Passcode
+          </Text>
           <View className="max-w-sm mx-auto mt-10">
             <View className="flex flex-row mb-2 space-x-2">
               {inputRefs.map((inputRef, index) => (
@@ -65,7 +68,9 @@ const LoginPasscodeScreen = () => {
               ))}
             </View>
           </View>
-          <Text className="mt-5 text-base font-normal">Just checking it's really you!</Text>
+          <Text className="mt-5 text-base font-normal">
+            Just checking it's really you!
+          </Text>
           <TouchableOpacity
             onPress={handleSubmit}
             className="h-12 bg-sky-900 w-64 rounded-xl justify-center items-center mt-16"

@@ -18,7 +18,7 @@ const Signup = () => {
         colors={["#83a4d4", "#FFFDE4"]}
         className="h-screen w-screen"
       >
-        <View className="justify-center items-center -mt-5">
+        <View className="justify-center items-center mt-5">
           <Image
             source={require("../assets/Hugosave.webp")}
             className="h-32 w-32 rounded-full mt-10"

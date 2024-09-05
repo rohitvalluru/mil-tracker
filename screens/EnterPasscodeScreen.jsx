@@ -14,7 +14,6 @@ const EnterPasscodeScreen = () => {
   const { addUser, name, nickname, email, password, setPassword } = useStore(); // Access setPassword from Zustand
   const navigation = useNavigation();
   const route = useRoute();
-  // const { user } = route.params || {};
 
   const handleInputChange = (value, index, setInput, inputArray, refs) => {
     const newInput = [...inputArray];
@@ -27,7 +26,7 @@ const EnterPasscodeScreen = () => {
       refs[index + 1].current.focus();
     }
   };
-
+  
   const handleBackButton = () => {
     navigation.navigate("CreateAccountScreen");
   };
@@ -60,11 +59,11 @@ const EnterPasscodeScreen = () => {
         colors={["#83a4d4", "#FFFDE4"]}
         className="h-screen w-screen"
       >
-        <View className="justify-center items-center">
+        <View className="justify-center items-center mt-10">
           <TouchableOpacity className="mr-72" onPress={handleBackButton}>
             <FontAwesome name="long-arrow-left" size={36} color="black" />
           </TouchableOpacity>
-          <Text className="text-2xl font-medium text-sky-800 mr-40 mt-10">
+          <Text className="text-2xl font-medium text-red-600 mr-40 mt-10">
             Set a Passcode
           </Text>
 

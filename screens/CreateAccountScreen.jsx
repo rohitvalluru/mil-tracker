@@ -54,11 +54,11 @@ const CreateAccountScreen = () => {
         colors={["#83a4d4", "#FFFDE4"]}
         className="h-screen w-screen"
       >
-        <View className="flex-1 items-center">
+        <View className="flex-1 items-center mt-12">
           <TouchableOpacity className="mr-72" onPress={handleBackButton}>
             <FontAwesome name="long-arrow-left" size={36} color="black" />
           </TouchableOpacity>
-          <Text className="text-2xl font-medium text-sky-800 mr-40 mt-10">
+          <Text className="text-2xl font-medium text-red-600 mr-40 mt-10">
             Create Account
           </Text>
           <View>
@@ -90,7 +90,7 @@ const CreateAccountScreen = () => {
               />
             </View>
           </View>
-          <View className="h-40 w-full bg-white ">
+          <View className="h-40 w-full bg-white absolute bottom-0">
             <View className="flex flex-row">
               <View className="flex-row items-center mt-5">
                 <Pressable
