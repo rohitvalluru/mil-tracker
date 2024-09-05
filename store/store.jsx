@@ -11,6 +11,12 @@ const useStore = create(persist(
     vehicleType: '',
     imageUri: '',
     refuelRecords: {}, // Use an object to map vehicle IDs to records
+    name:'',
+    nickname:'',
+    email:'',
+    setName:(name)=>set({name}),
+    setNickname:(nickname)=>set({nickname}),
+    setEmail: (email)=> set({email}),
 
     setVehicleName: (name) => set({ vehicleName: name }),
     setEngineCC: (cc) => set({ engineCC: cc }),
