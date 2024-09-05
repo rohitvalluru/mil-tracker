@@ -1,4 +1,11 @@
-import { View, Text, TouchableOpacity, Image, StyleSheet, Alert } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+  Alert,
+} from "react-native";
 import React, { useEffect } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -39,6 +46,10 @@ const UserLoginScreen = () => {
     );
   };
 
+  const handleProfilePress = (user) => {
+    navigation.navigate("LoginPasscodeScreen", { user });
+  };
+
   return (
     <SafeAreaView>
       <LinearGradient
@@ -60,14 +71,20 @@ const UserLoginScreen = () => {
           <View className="flex-wrap flex-row justify-center items-center mt-5">
             {users.slice(0, 3).map((user, index) => (
               <View key={index} className="mx-4 my-2">
-                <ProfileComponent name={user.name} />
+                <ProfileComponent
+                  name={user.name}
+                  onPress={() => handleProfilePress(user)}
+                />
               </View>
             ))}
           </View>
           <View className="flex-wrap flex-row justify-center items-center mt-4">
             {users.slice(3, 5).map((user, index) => (
               <View key={index} className="mx-4 my-2">
-                <ProfileComponent name={user.name} />
+                <ProfileComponent
+                  name={user.name}
+                  onPress={() => handleProfilePress(user)}
+                />
               </View>
             ))}
           </View>

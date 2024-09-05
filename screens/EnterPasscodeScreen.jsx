@@ -3,7 +3,7 @@ import React, { useState, useRef } from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import useStore from "../store/store"; // Import Zustand store
 
 const EnterPasscodeScreen = () => {
@@ -13,6 +13,8 @@ const EnterPasscodeScreen = () => {
   const [confirmPasscode, setConfirmPasscode] = useState(["", "", "", ""]);
   const { addUser, name, nickname, email, password, setPassword } = useStore(); // Access setPassword from Zustand
   const navigation = useNavigation();
+  const route = useRoute();
+  // const { user } = route.params || {};
 
   const handleInputChange = (value, index, setInput, inputArray, refs) => {
     const newInput = [...inputArray];
@@ -37,9 +39,9 @@ const EnterPasscodeScreen = () => {
     if (passcodeString === confirmPasscodeString) {
       setPassword(passcodeString); // Store the passcode as a string
       addUser({
-        name,
-        nickname,
-        email,
+        name: name || "",
+        nickname: nickname || "",
+        email: email || "",
         password: passcodeString, // Store passcode as string
       });
       // Clear the passcode state

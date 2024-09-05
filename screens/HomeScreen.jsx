@@ -119,6 +119,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import EnterPasscodeScreen from "./EnterPasscodeScreen";
 import CreateAccountScreen from "./CreateAccountScreen";
 import UserLoginScreen from "./UserLoginScreen";
+import LoginPasscodeScreen from "../screens/LoginPasscodeScrren";
 
 const HomeScreen = () => {
   return (
@@ -128,6 +129,7 @@ const HomeScreen = () => {
         className="h-screen w-screen"
       >
         <UserLoginScreen />
+        {/* <LoginPasscodeScreen /> */}
       </LinearGradient>
     </SafeAreaView>
   );
