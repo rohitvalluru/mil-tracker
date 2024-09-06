@@ -9,7 +9,6 @@ const FuelInsights = ({ selectedVehicle }) => {
 
   useEffect(() => {
     if (!selectedVehicle) {
-      console.log("No vehicle selected.");
       return;
     }
 
@@ -18,9 +17,6 @@ const FuelInsights = ({ selectedVehicle }) => {
     const currentMonth = currentDate.getMonth();
 
     const records = refuelRecords[selectedVehicle.vehicleName] || [];
-
-    console.log("Selected Vehicle:", selectedVehicle);
-    console.log("Refuel Records:", records);
 
     // Filter records for the current month
     const monthlyRecords = records.filter((record) => {
@@ -31,14 +27,11 @@ const FuelInsights = ({ selectedVehicle }) => {
       );
     });
 
-    console.log("Monthly Records:", monthlyRecords);
-
     // Sort by date to get the most recent record
     monthlyRecords.sort((a, b) => new Date(b.date) - new Date(a.date));
 
     if (monthlyRecords.length > 0) {
       const latestRecord = monthlyRecords[0]; // Get the record closest to the current date
-      console.log("Latest Record for Current Month:", latestRecord);
 
       // Calculate mileage
       const distance = parseFloat(latestRecord.distance) || 0;
@@ -59,19 +52,12 @@ const FuelInsights = ({ selectedVehicle }) => {
       0
     );
 
-    console.log("Total Distance:", totalDistance);
-    console.log("Total Fuel Used:", totalFuelUsed);
-
     if (totalFuelUsed > 0) {
       const avgConsumption = (totalDistance / totalFuelUsed).toFixed(2);
       setAvgFuelConsumption(`${avgConsumption} km/l`);
     } else {
       setAvgFuelConsumption("N/A");
     }
-
-    // Log final values
-    console.log("Average Fuel Consumption:", avgFuelConsumption);
-    console.log("Last Fuel Consumption:", lastFuelConsumption);
   }, [selectedVehicle, refuelRecords]);
 
   return (

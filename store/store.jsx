@@ -12,6 +12,7 @@ const useStore = create(
       vehicleType: "",
       imageUri: "",
       refuelRecords: {}, // Use an object to map vehicle IDs to records
+      selectedVehicle: null, // New state for the selected vehicle
 
       name: "",
       nickname: "",
@@ -75,6 +76,8 @@ const useStore = create(
           console.error("Failed to load users from AsyncStorage", error);
         }
       },
+
+      setSelectedVehicle: (vehicle) => set({ selectedVehicle: vehicle }),
 
       clearrefuelrecordsforvehicle: (vehicleId) =>
         set((state) => {

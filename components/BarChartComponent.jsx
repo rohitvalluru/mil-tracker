@@ -4,8 +4,8 @@ import { BarChart } from "react-native-gifted-charts";
 import useStore from "../store/store";
 import DropdownComponent from "../components/DropdownComponent";
 
-const App = ({ selectedVehicle }) => {
-  const { vehicles, refuelRecords } = useStore();
+const App = () => {
+  const { vehicles, refuelRecords, selectedVehicle } = useStore();
   const [barData, setBarData] = useState([]);
   const [mileageData, setMileageData] = useState([]);
 

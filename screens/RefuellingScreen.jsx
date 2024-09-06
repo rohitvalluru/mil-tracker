@@ -1,26 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Text, View, TouchableOpacity, Alert, ScrollView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useRoute } from "@react-navigation/native";
 import useStore from "../store/store";
 import FuelDataList from "../components/FuelDataList";
 import ModalComponent from "../components/ModalComponent";
-import DropdownComponent from "../components/DropdownComponent";
 
 const RefuellingScreen = () => {
-  const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const {
-    vehicles = [],
     refuelRecords = {},
     clearrefuelrecordsforvehicle,
+    selectedVehicle,
   } = useStore();
-
-  // Handle vehicle selection from dropdown
-  const handleVehicleSelection = (vehicleName) => {
-    const vehicle = vehicles.find((v) => v.vehicleName === vehicleName);
-    setSelectedVehicle(vehicle || null); // Ensure selectedVehicle is null if not found
-  };
 
   // Get records for the selected vehicle
   const records = selectedVehicle
@@ -61,14 +54,12 @@ const RefuellingScreen = () => {
       >
         <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: 70 }}>
           <View className="justify-center items-center">
-            <DropdownComponent
-              useLocalStorage={true}
-              onChangeValue={handleVehicleSelection}
-              placeholder="Choose Vehicle"
-            />
             {fuelRecords.length > 0 && (
               <View className="mt-5">
-                <FuelDataList records={fuelRecords} />
+                <FuelDataList
+                  records={fuelRecords}
+                  selectedVehicle={selectedVehicle}
+                />
               </View>
             )}
             <TouchableOpacity

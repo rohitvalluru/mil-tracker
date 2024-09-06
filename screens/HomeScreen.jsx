@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import {
   Text,
   Image,
@@ -20,28 +20,28 @@ import FuelInsights from "../components/FuelInsights";
 
 const HomeScreen = () => {
   const navigation = useNavigation();
-  const { vehicles, refuelRecords } = useStore(); // Access vehicles and refuelRecords from the store
-  const [selectedVehicle, setSelectedVehicle] = useState(null); // State for selected vehicle
+  const { vehicles, refuelRecords, selectedVehicle, setSelectedVehicle } =
+    useStore(); // Access vehicles, refuelRecords, and setSelectedVehicle from the store
 
   // Get the last added vehicle
   const lastVehicle = vehicles.length > 0 ? vehicles[0] : null;
 
-  // Handle vehicle selection from dropdown
+  // Handle vehicle selection from dropdown and store it globally
   const handleVehicleSelection = (vehicleName) => {
     const vehicle = vehicles.find((v) => v.vehicleName === vehicleName);
-    setSelectedVehicle(vehicle); // Update selected vehicle
+    setSelectedVehicle(vehicle); // Set the selected vehicle globally in the store
   };
 
   const handleAddVehicleHome = () => {
     if (selectedVehicle) {
       navigation.navigate("Refuelling", {
-        vehicleId: selectedVehicle.vehicleName,
+        selectedVehicle, // Pass the selected vehicle object
       });
     }
   };
 
   useEffect(() => {
-    // Set the last vehicle as the default selected vehicle if available
+    // Set the last vehicle as the default selected vehicle if available and no vehicle is selected
     if (lastVehicle && !selectedVehicle) {
       setSelectedVehicle(lastVehicle);
     }
