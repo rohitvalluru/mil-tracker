@@ -43,6 +43,10 @@ const HomeScreen = () => {
     ? refuelRecords[selectedVehicle.vehicleName] || []
     : [];
 
+  const fuelRecords = records.filter(
+    (record) => record.refuelDate && record.liters && record.moneySpent
+  );
+
   return (
     <SafeAreaView>
       <LinearGradient
@@ -96,7 +100,11 @@ const HomeScreen = () => {
                     <Text className="text-lg font-semibold mb-2">
                       Refuelling history
                     </Text>
-                    <FuelDataList records={records} />
+                    {fuelRecords.length > 0 && (
+                      <View className="mt-5">
+                        <FuelDataList records={fuelRecords} />
+                      </View>
+                    )}
                   </View>
                 )}
               </>

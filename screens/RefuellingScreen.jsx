@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Text, View, TouchableOpacity, Alert, ScrollView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -10,18 +10,27 @@ import DropdownComponent from "../components/DropdownComponent";
 const RefuellingScreen = () => {
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
-  const { vehicles, refuelRecords, clearrefuelrecordsforvehicle } = useStore();
+  const {
+    vehicles = [],
+    refuelRecords = {},
+    clearrefuelrecordsforvehicle,
+  } = useStore();
 
   // Handle vehicle selection from dropdown
   const handleVehicleSelection = (vehicleName) => {
     const vehicle = vehicles.find((v) => v.vehicleName === vehicleName);
-    setSelectedVehicle(vehicle);
+    setSelectedVehicle(vehicle || null); // Ensure selectedVehicle is null if not found
   };
 
   // Get records for the selected vehicle
   const records = selectedVehicle
     ? refuelRecords[selectedVehicle.vehicleName] || []
     : [];
+
+  // Filter only refueling records (ignore mileage-only records)
+  const fuelRecords = records.filter(
+    (record) => record.refuelDate && record.liters && record.moneySpent
+  );
 
   const handleClearRecords = () => {
     if (!selectedVehicle) {
@@ -38,8 +47,6 @@ const RefuellingScreen = () => {
           text: "OK",
           onPress: () => {
             clearrefuelrecordsforvehicle(selectedVehicle.vehicleName);
-            // Force a re-render by updating the state
-            setSelectedVehicle({ ...selectedVehicle });
           },
         },
       ]
@@ -59,9 +66,11 @@ const RefuellingScreen = () => {
               onChangeValue={handleVehicleSelection}
               placeholder="Choose Vehicle"
             />
-            <View className="mt-4">
-              <FuelDataList records={records} />
-            </View>
+            {fuelRecords.length > 0 && (
+              <View className="mt-5">
+                <FuelDataList records={fuelRecords} />
+              </View>
+            )}
             <TouchableOpacity
               className="flex flex-row justify-center items-center h-14 w-40 bg-sky-900 mt-10 rounded-xl"
               onPress={() => setModalVisible(true)}
