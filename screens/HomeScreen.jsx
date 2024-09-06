@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Text, Image, View, TouchableOpacity, ScrollView } from "react-native";
+import {
+  Text,
+  Image,
+  View,
+  TouchableOpacity,
+  ScrollView,
+  StyleSheet,
+} from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AntDesign from "@expo/vector-icons/AntDesign";
@@ -8,6 +15,8 @@ import useStore from "../store/store";
 import NoVehicleComponent from "../components/NoVehicleComponent";
 import FuelDataList from "../components/FuelDataList";
 import DropdownComponent from "../components/DropdownComponent";
+import BarChartComponent from "../components/BarChartComponent";
+import FuelInsights from "../components/FuelInsights";
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -53,7 +62,7 @@ const HomeScreen = () => {
         colors={["#83a4d4", "#FFFDE4"]}
         className="h-screen w-screen"
       >
-        <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: 70 }}>
+        <ScrollView contentContainerStyle={styles.scrollViewContent}>
           <View className="flex justify-center items-center">
             <Image
               source={require("../assets/Hugosave.webp")}
@@ -84,6 +93,9 @@ const HomeScreen = () => {
                   </View>
                 )}
 
+                <FuelInsights selectedVehicle={selectedVehicle} />
+
+                {/* Display FuelDataList if a vehicle is selected */}
                 <TouchableOpacity
                   className="flex flex-row justify-center items-center h-14 w-40 bg-sky-900 mt-10 rounded-xl"
                   onPress={handleAddVehicleHome}
@@ -93,16 +105,15 @@ const HomeScreen = () => {
                   </Text>
                   <AntDesign name="arrowright" size={18} color="white" />
                 </TouchableOpacity>
-
-                {/* Display FuelDataList if a vehicle is selected */}
                 {selectedVehicle && (
-                  <View className="mt-5 w-full justify-center items-center">
-                    <Text className="text-lg font-semibold mb-2">
-                      Refuelling history
-                    </Text>
+                  <View className="w-full h-3/4 justify-center items-center">
+                    <BarChartComponent selectedVehicle={selectedVehicle} />
                     {fuelRecords.length > 0 && (
-                      <View className="mt-5">
-                        <FuelDataList records={fuelRecords} />
+                      <View className="-mt-44">
+                        <Text className="text-lg font-semibold text-center text-sky-800">
+                          Refuelling history
+                        </Text>
+                        <FuelDataList records={fuelRecords.slice(0, 5)} />
                       </View>
                     )}
                   </View>
@@ -119,3 +130,12 @@ const HomeScreen = () => {
 };
 
 export default HomeScreen;
+
+const styles = StyleSheet.create({
+  scrollViewContent: {
+    flexGrow: 1,
+    paddingBottom: 550,
+    paddingTop: 220, // Adjust if needed
+    alignItems: "center", // Center content if desired
+  },
+});

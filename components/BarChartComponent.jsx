@@ -4,9 +4,8 @@ import { BarChart } from "react-native-gifted-charts";
 import useStore from "../store/store";
 import DropdownComponent from "../components/DropdownComponent";
 
-const App = () => {
+const App = ({ selectedVehicle }) => {
   const { vehicles, refuelRecords } = useStore();
-  const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [barData, setBarData] = useState([]);
   const [mileageData, setMileageData] = useState([]);
 
@@ -122,11 +121,7 @@ const App = () => {
     }
 
     if (data.length === 0 || data.every((item) => item.value === 0)) {
-      return (
-        <Text className="text-transparent">
-          No data available
-        </Text>
-      );
+      return <Text className="text-transparent">No data available</Text>;
     }
 
     return (
@@ -157,11 +152,6 @@ const App = () => {
 
   return (
     <View style={styles.container}>
-      <DropdownComponent
-        useLocalStorage={true}
-        onChangeValue={handleVehicleSelection}
-        placeholder="Choose Vehicle"
-      />
       {renderChart(barData, "Monthly Fuel Spending", roundToNearestHundred)}
       {renderChart(
         mileageData,
@@ -178,6 +168,8 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     height: 50,
+    fontSize: 18, // Use points, not pixels
+    lineHeight: 28, // Use points, not pixels
   },
   chartContainer: {
     marginTop: 20,
