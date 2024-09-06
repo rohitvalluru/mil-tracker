@@ -76,6 +76,13 @@ const useStore = create(
         }
       },
 
+      clearrefuelrecordsforvehicle: (vehicleId) =>
+        set((state) => {
+          const newRefuelRecords = { ...state.refuelRecords };
+          delete newRefuelRecords[vehicleId];
+          return { refuelRecords: newRefuelRecords };
+        }),
+
       clearAllUsers: () => set({ users: [] }),
     }),
     {

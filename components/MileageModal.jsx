@@ -47,7 +47,7 @@ const MileageModal = ({ visible, onClose, onSave }) => {
     <Modal visible={visible} transparent={true} animationType="slide">
       <View className="flex-1 justify-center items-center bg-black bg-opacity-50">
         <View className="bg-white p-6 rounded-xl w-80">
-          <Text className="text-lg font-semibold mb-4 text-center text-sky-900">Add Fuel Data</Text>
+          <Text className="text-lg font-semibold mb-4 text-center text-sky-900">Add Mileage Data</Text>
 
           {/* Dropdown for vehicle selection */}
           <DropDownPicker

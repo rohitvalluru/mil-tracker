@@ -46,7 +46,7 @@ const VehicleScreen = () => {
         className="flex-1"
       >
         <View className="flex-1">
-          <Text className="text-2xl font-bold m-4 text-center text-white">Vehicles</Text>
+          <Text className="text-2xl font-bold m-4 text-center text-sky-900">Vehicles</Text>
           {vehicles.length > 0 ? (
             <FlatList
               data={vehicles}
