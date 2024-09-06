@@ -6,6 +6,8 @@ import { useRoute } from "@react-navigation/native";
 import useStore from "../store/store";
 import FuelDataList from "../components/FuelDataList";
 import ModalComponent from "../components/ModalComponent";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 const RefuellingScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -54,6 +56,9 @@ const RefuellingScreen = () => {
       >
         <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: 70 }}>
           <View className="justify-center items-center">
+            <Text className="text-2xl font-bold m-4 text-center text-red-500">
+              Fuel Spends
+            </Text>
             {fuelRecords.length > 0 && (
               <View className="mt-5">
                 <FuelDataList
@@ -63,10 +68,11 @@ const RefuellingScreen = () => {
               </View>
             )}
             <TouchableOpacity
-              className="flex flex-row justify-center items-center h-14 w-40 bg-sky-900 mt-10 rounded-xl"
+              className="flex flex-row justify-center items-center h-14 w-44 bg-sky-900 mt-10 rounded-xl"
               onPress={() => setModalVisible(true)}
             >
-              <Text className="text-white text-base font-semibold mr-2">
+              <Ionicons name="add-circle" size={28} color="white" />
+              <Text className="text-white px-2 text-base font-semibold mr-2">
                 Add Refuelling
               </Text>
             </TouchableOpacity>
@@ -75,10 +81,15 @@ const RefuellingScreen = () => {
               onClose={() => setModalVisible(false)}
             />
             <TouchableOpacity
-              className="flex flex-row justify-center items-center h-10 w-36 bg-red-600 mt-10 rounded-lg"
+              className="flex flex-row justify-center items-center h-10 w-40 bg-red-600 mt-10 rounded-lg"
               onPress={handleClearRecords}
             >
-              <Text className="text-white text-base font-semibold mr-2">
+              <MaterialCommunityIcons
+                name="delete-empty"
+                size={24}
+                color="white"
+              />
+              <Text className="text-white text-base font-semibold px-2 mr-2">
                 Clear Records
               </Text>
             </TouchableOpacity>

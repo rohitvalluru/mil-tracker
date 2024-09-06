@@ -5,6 +5,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import useStore from "../store/store";
 import BarChartComponent from "../components/BarChartComponent";
 import MileageModal from "../components/MileageModal";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 const PerformanceScreen = () => {
   const { vehicles, addFuelData } = useStore(); // Assuming `addFuelData` action is implemented
@@ -21,13 +22,17 @@ const PerformanceScreen = () => {
         colors={["#83a4d4", "#FFFDE4"]}
         className="h-screen w-screen"
       >
+        <Text className="text-2xl font-bold m-4 text-center text-red-500">
+          Performance
+        </Text>
         <BarChartComponent />
         <View className="flex-1 justify-center items-center">
           <TouchableOpacity
-            className="flex flex-row justify-center items-center h-14 w-40 bg-sky-900 mt-32 rounded-xl"
+            className="flex flex-row justify-center items-center h-14 w-44 bg-sky-900 mt-32 rounded-xl"
             onPress={() => setModalVisible(true)}
           >
-            <Text className="text-white text-base font-semibold mr-2">
+            <Ionicons name="add-circle" size={28} color="white" />
+            <Text className="text-white px-2 text-base font-semibold mr-2">
               Add Mileage
             </Text>
           </TouchableOpacity>
