@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Text, View, TouchableOpacity, Alert, ScrollView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useRoute } from "@react-navigation/native";
 import useStore from "../store/store";
 import FuelDataList from "../components/FuelDataList";
 import ModalComponent from "../components/ModalComponent";
@@ -54,17 +53,31 @@ const RefuellingScreen = () => {
         colors={["#83a4d4", "#FFFDE4"]}
         className="h-screen w-screen"
       >
-        <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: 70 }}>
+        <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: 100 }}>
           <View className="justify-center items-center">
-            <Text className="text-2xl font-bold m-4 text-center text-red-500">
+            <Text className="text-2xl font-bold m-4 text-center text-sky-800">
               Fuel Spends
             </Text>
+            <View className="border-t-2 border-gray-300 my-4 w-full -mt-1"></View>
             {fuelRecords.length > 0 && (
-              <View className="mt-5">
+              <View className="mt-5 justify-center items-center">
                 <FuelDataList
                   records={fuelRecords}
                   selectedVehicle={selectedVehicle}
                 />
+                <TouchableOpacity
+                  className="flex flex-row justify-center items-center h-10 w-40 bg-red-600 mt-10 rounded-lg"
+                  onPress={handleClearRecords}
+                >
+                  <MaterialCommunityIcons
+                    name="delete-empty"
+                    size={24}
+                    color="white"
+                  />
+                  <Text className="text-white text-base font-semibold px-2 mr-2">
+                    Clear Records
+                  </Text>
+                </TouchableOpacity>
               </View>
             )}
             <TouchableOpacity
@@ -80,19 +93,6 @@ const RefuellingScreen = () => {
               visible={modalVisible}
               onClose={() => setModalVisible(false)}
             />
-            <TouchableOpacity
-              className="flex flex-row justify-center items-center h-10 w-40 bg-red-600 mt-10 rounded-lg"
-              onPress={handleClearRecords}
-            >
-              <MaterialCommunityIcons
-                name="delete-empty"
-                size={24}
-                color="white"
-              />
-              <Text className="text-white text-base font-semibold px-2 mr-2">
-                Clear Records
-              </Text>
-            </TouchableOpacity>
           </View>
         </ScrollView>
       </LinearGradient>

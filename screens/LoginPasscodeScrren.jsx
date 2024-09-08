@@ -9,7 +9,7 @@ import useStore from "../store/store";
 const LoginPasscodeScreen = ({ setIsAuthenticated }) => {
   const inputRefs = [useRef(null), useRef(null), useRef(null), useRef(null)];
   const [passcode, setPasscode] = useState(["", "", "", ""]);
-  const { users } = useStore();
+  const { users, setCurrentUser } = useStore();
   const navigation = useNavigation();
   const route = useRoute();
   const { user } = route.params; // Get user from params
@@ -31,8 +31,10 @@ const LoginPasscodeScreen = ({ setIsAuthenticated }) => {
 
     if (passcodeString === user.password) {
       // Compare with the stored passcode
+      setCurrentUser(user);
       Alert.alert("Success", "You are successfully logged in!");
       setIsAuthenticated(true);
+    
       navigation.navigate("BottomTabs");
       // Navigate to the next screen or perform additional actions
     } else {

@@ -22,9 +22,10 @@ const PerformanceScreen = () => {
         colors={["#83a4d4", "#FFFDE4"]}
         className="h-screen w-screen"
       >
-        <Text className="text-2xl font-bold m-4 text-center text-red-500">
+        <Text className="text-2xl font-bold m-4 text-center text-sky-800">
           Performance
         </Text>
+        <View className="border-t-2 border-gray-300 my-4 w-full -mt-1"></View>
         <BarChartComponent />
         <View className="flex-1 justify-center items-center">
           <TouchableOpacity

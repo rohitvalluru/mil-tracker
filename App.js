@@ -20,11 +20,10 @@ const App = () => {
   useEffect(() => {
     const checkUserAndNavigate = async () => {
       await loadUsers(); // Load users from AsyncStorage
-      await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulate delay (e.g., SplashScreen display time)
+      await new Promise((resolve) => setTimeout(resolve, 3000)); // Simulate delay (e.g., SplashScreen display time)
 
       const loadedUsers = useStore.getState().users; // Access updated users state
 
-      console.log(loadedUsers);
       if (loadedUsers.length > 0) {
         setInitialRoute("UserLoginScreen");
       } else {

@@ -5,7 +5,7 @@ import useStore from "../store/store";
 import DropdownComponent from "../components/DropdownComponent";
 
 const App = () => {
-  const { vehicles, refuelRecords, selectedVehicle } = useStore();
+  const { vehicles, refuelRecords, selectedVehicle, currentUser } = useStore();
   const [barData, setBarData] = useState([]);
   const [mileageData, setMileageData] = useState([]);
 
@@ -51,9 +51,10 @@ const App = () => {
     calculateMonthlySpending();
   }, [selectedVehicle, refuelRecords]);
 
+
   useEffect(() => {
     const calculateMonthlyMileage = () => {
-      if (!selectedVehicle) return;
+      if (!selectedVehicle || !currentUser) return;
 
       const currentDate = new Date();
       const currentYear = currentDate.getFullYear();
@@ -68,7 +69,8 @@ const App = () => {
           return date.toLocaleString("default", { month: "short" });
         });
 
-      const records = refuelRecords[selectedVehicle.vehicleName] || [];
+      const records =
+        refuelRecords[currentUser.email]?.[selectedVehicle.vehicleName] || [];
 
       records.forEach((record) => {
         const recordDate = new Date(record.date);
@@ -91,12 +93,13 @@ const App = () => {
         label: monthLabels[index],
         frontColor: "#FFA500",
       }));
+      // console.log("refuel records: ", refuelRecords);
 
       setMileageData(formattedMileageData);
     };
 
     calculateMonthlyMileage();
-  }, [selectedVehicle, refuelRecords]);
+  }, [selectedVehicle, refuelRecords, currentUser]);
 
   const handleVehicleSelection = (vehicleName) => {
     const vehicle = vehicles.find((v) => v.vehicleName === vehicleName);
@@ -155,7 +158,7 @@ const App = () => {
       {renderChart(barData, "Monthly Fuel Spending", roundToNearestHundred)}
       {renderChart(
         mileageData,
-        "Monthly Mileage Performance",
+        "Vehicle Mileage Performance",
         roundToNearestTen,
         true
       )}

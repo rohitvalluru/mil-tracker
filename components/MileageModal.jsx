@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Modal, TouchableOpacity } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import DropDownPicker from 'react-native-dropdown-picker';
-import useStore from '../store/store';
+import React, { useState, useEffect } from "react";
+import { View, Text, TextInput, Modal, TouchableOpacity } from "react-native";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import DropDownPicker from "react-native-dropdown-picker";
+import useStore from "../store/store";
 
 const MileageModal = ({ visible, onClose, onSave }) => {
-  const [distance, setDistance] = useState('');
-  const [fuelUsed, setFuelUsed] = useState('');
+  const [distance, setDistance] = useState("");
+  const [fuelUsed, setFuelUsed] = useState("");
   const [date, setDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [openDropdown, setOpenDropdown] = useState(false);
-  const { vehicles } = useStore();
+  const { userVehicles, currentUser } = useStore();
 
   const resetForm = () => {
-    setDistance('');
-    setFuelUsed('');
+    setDistance("");
+    setFuelUsed("");
     setDate(new Date());
     setSelectedVehicle(null);
     setOpenDropdown(false);
@@ -30,15 +30,19 @@ const MileageModal = ({ visible, onClose, onSave }) => {
     };
 
     onSave(fuelData);
-    resetForm();  // Reset form fields after saving
+    resetForm(); // Reset form fields after saving
     onClose();
   };
 
   useEffect(() => {
     if (visible) {
-      resetForm();  // Reset form fields when the modal is opened
+      resetForm(); // Reset form fields when the modal is opened
     }
   }, [visible]);
+
+  const filteredVehicles = currentUser
+    ? userVehicles[currentUser.email] || []
+    : [];
 
   // Check if all fields are filled
   const isFormComplete = distance && fuelUsed && selectedVehicle && date;
@@ -47,13 +51,15 @@ const MileageModal = ({ visible, onClose, onSave }) => {
     <Modal visible={visible} transparent={true} animationType="slide">
       <View className="flex-1 justify-center items-center bg-black bg-opacity-50">
         <View className="bg-white p-6 rounded-xl w-80">
-          <Text className="text-lg font-semibold mb-4 text-center text-sky-900">Add Mileage Data</Text>
+          <Text className="text-lg font-semibold mb-4 text-center text-sky-900">
+            Add Mileage Data
+          </Text>
 
           {/* Dropdown for vehicle selection */}
           <DropDownPicker
             open={openDropdown} // Control whether dropdown is open
             value={selectedVehicle} // Current selected value
-            items={vehicles.map((vehicle) => ({
+            items={filteredVehicles.map((vehicle) => ({
               label: vehicle.vehicleName,
               value: vehicle.vehicleName, // Using vehicleName as the value and key
             }))}
@@ -80,7 +86,10 @@ const MileageModal = ({ visible, onClose, onSave }) => {
           />
 
           {/* Date picker */}
-          <TouchableOpacity onPress={() => setShowDatePicker(true)} className="p-2 border rounded-md mb-4">
+          <TouchableOpacity
+            onPress={() => setShowDatePicker(true)}
+            className="p-2 border rounded-md mb-4"
+          >
             <Text>{date.toDateString()}</Text>
           </TouchableOpacity>
           {showDatePicker && (
@@ -98,11 +107,19 @@ const MileageModal = ({ visible, onClose, onSave }) => {
           )}
 
           <View className="flex flex-row justify-between mt-4">
-            <TouchableOpacity className="bg-red-500 p-2 rounded-lg" onPress={() => { resetForm(); onClose(); }}>
+            <TouchableOpacity
+              className="bg-red-500 p-2 rounded-lg"
+              onPress={() => {
+                resetForm();
+                onClose();
+              }}
+            >
               <Text className="text-white">Cancel</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              className={`p-2 rounded-lg ${isFormComplete ? 'bg-sky-900' : 'bg-gray-400'}`}
+              className={`p-2 rounded-lg ${
+                isFormComplete ? "bg-sky-900" : "bg-gray-400"
+              }`}
               onPress={handleSave}
               disabled={!isFormComplete}
             >
@@ -113,6 +130,6 @@ const MileageModal = ({ visible, onClose, onSave }) => {
       </View>
     </Modal>
   );
-}
+};
 
 export default MileageModal;

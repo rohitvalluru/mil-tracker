@@ -3,11 +3,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '../screens/HomeScreen';
 import AddVehicle from '../screens/AddVehicle';
 import VehicleAddedScreen from '../screens/VehicleAddedScreen';
-import CreateAccountScreen from '../screens/CreateAccountScreen';
-import EnterPasscodeScreen from '../screens/EnterPasscodeScreen';
-import Signup from '../screens/Signup';
-import UserLoginScreen from '../screens/UserLoginScreen';
-import LoginPasscodeScreen from '../screens/LoginPasscodeScrren';
 
 const HomeStack = createStackNavigator();
 
@@ -20,17 +15,6 @@ export default function HomeStackScreen() {
         name="VehicleAddedScreen"
         component={VehicleAddedScreen}
       />
-      {/* <HomeStack.Screen
-        name="CreateAccountScreen"
-        component={CreateAccountScreen}
-      />
-      <HomeStack.Screen
-        name="EnterPasscodeScreen"
-        component={EnterPasscodeScreen}
-      />
-      <HomeStack.Screen name="Signup" component={Signup} />
-      <HomeStack.Screen name="UserLoginScreen" component={UserLoginScreen} />
-      <HomeStack.Screen name="LoginPasscodeScreen" component={LoginPasscodeScreen} /> */}
     </HomeStack.Navigator>
   );
 }

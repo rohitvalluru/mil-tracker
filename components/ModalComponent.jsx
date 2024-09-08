@@ -1,19 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Modal, TextInput } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import DropDownPicker from 'react-native-dropdown-picker';
-import useStore from '../store/store'; // Adjust the path as needed
+import React, { useState, useEffect } from "react";
+import { View, Text, TouchableOpacity, Modal, TextInput } from "react-native";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import DropDownPicker from "react-native-dropdown-picker";
+import useStore from "../store/store"; // Adjust the path as needed
 
 const ModalComponent = ({ visible, onClose }) => {
-  const [moneySpent, setMoneySpent] = useState('');
-  const [liters, setLiters] = useState('');
+  const [moneySpent, setMoneySpent] = useState("");
+  const [liters, setLiters] = useState("");
   const [refuelDate, setRefuelDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
 
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [openDropdown, setOpenDropdown] = useState(false); // For dropdown open state
 
-  const { vehicles, addRefuelRecord } = useStore();
+  const { addRefuelRecord, currentUser, userVehicles } = useStore();
+
+  // Filter vehicles based on the current user email
+  const vehicles = userVehicles[currentUser?.email] || [];
+
+  // Debugging
+  // useEffect(() => {
+  //   console.log("Current User:", currentUser);
+  //   console.log("User Vehicles:", userVehicles);
+  // }, [currentUser, vehicles]);
 
   const handleAddRefuelling = () => {
     const refuelRecord = {
@@ -33,8 +42,8 @@ const ModalComponent = ({ visible, onClose }) => {
   // Reset form fields when the modal is opened
   useEffect(() => {
     if (visible) {
-      setMoneySpent('');
-      setLiters('');
+      setMoneySpent("");
+      setLiters("");
       setRefuelDate(new Date());
       setSelectedVehicle(null);
       setOpenDropdown(false);
@@ -42,17 +51,24 @@ const ModalComponent = ({ visible, onClose }) => {
   }, [visible]);
 
   return (
-    <Modal visible={visible} transparent={true} animationType="slide" onRequestClose={onClose}>
+    <Modal
+      visible={visible}
+      transparent={true}
+      animationType="slide"
+      onRequestClose={onClose}
+    >
       <View className="flex-1 justify-center items-center bg-black bg-opacity-50">
         <View className="bg-white p-6 rounded-lg w-80">
-          <Text className="text-lg font-semibold mb-4 text-center text-sky-900">Add Refuelling</Text>
-          
+          <Text className="text-lg font-semibold mb-4 text-center text-sky-900">
+            Add Refuelling
+          </Text>
+
           <DropDownPicker
             open={openDropdown} // Control whether dropdown is open
             value={selectedVehicle} // Current selected value
             items={vehicles.map((vehicle) => ({
               label: vehicle.vehicleName,
-              value: vehicle.vehicleName, // Using vehicleName as the value and key
+              value: vehicle.vehicleName,
             }))}
             placeholder="Select Vehicle"
             setOpen={setOpenDropdown} // Set dropdown open state
@@ -76,7 +92,10 @@ const ModalComponent = ({ visible, onClose }) => {
             className="border border-gray-300 rounded-lg p-2 mb-4"
           />
 
-          <TouchableOpacity onPress={() => setShowDatePicker(true)} className="border border-gray-300 rounded-lg p-2 mb-4">
+          <TouchableOpacity
+            onPress={() => setShowDatePicker(true)}
+            className="border border-gray-300 rounded-lg p-2 mb-4"
+          >
             <Text>{refuelDate.toDateString()}</Text>
           </TouchableOpacity>
 
@@ -95,12 +114,17 @@ const ModalComponent = ({ visible, onClose }) => {
           )}
 
           <View className="flex flex-row justify-between mt-4">
-            <TouchableOpacity className="bg-red-500 p-2 rounded-lg" onPress={onClose}>
+            <TouchableOpacity
+              className="bg-red-500 p-2 rounded-lg"
+              onPress={onClose}
+            >
               <Text className="text-white">Cancel</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
-              className={`p-2 rounded-lg ${isFormComplete ? 'bg-sky-900' : 'bg-gray-400'}`}
+              className={`p-2 rounded-lg ${
+                isFormComplete ? "bg-sky-900" : "bg-gray-400"
+              }`}
               onPress={handleAddRefuelling}
               disabled={!isFormComplete}
             >

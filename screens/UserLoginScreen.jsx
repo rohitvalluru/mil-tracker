@@ -73,6 +73,7 @@ const UserLoginScreen = () => {
               <View key={index} className="mx-4 my-2">
                 <ProfileComponent
                   name={user.name}
+                  nickname={user.nickname}
                   onPress={() => handleProfilePress(user)}
                 />
               </View>
@@ -83,6 +84,7 @@ const UserLoginScreen = () => {
               <View key={index} className="mx-4 my-2">
                 <ProfileComponent
                   name={user.name}
+                  nickname={user.nickname}
                   onPress={() => handleProfilePress(user)}
                 />
               </View>
@@ -90,7 +92,7 @@ const UserLoginScreen = () => {
           </View>
 
           <TouchableOpacity onPress={handleNewUser}>
-            <View className="bg-blue-900 h-16 w-16 mt-20 rounded-full justify-center items-center">
+            <View className="bg-sky-900 h-16 w-16 mt-20 rounded-full justify-center items-center">
               <AntDesign name="plus" size={40} color="white" />
             </View>
             <Text className="text-center mt-2 font-medium text-sky-900">

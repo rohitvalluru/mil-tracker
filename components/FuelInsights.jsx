@@ -3,20 +3,23 @@ import { View, Text } from "react-native";
 import useStore from "../store/store";
 
 const FuelInsights = ({ selectedVehicle }) => {
-  const { refuelRecords } = useStore();
+  const { refuelRecords, currentUser } = useStore();
   const [avgFuelConsumption, setAvgFuelConsumption] = useState("0 km/l");
   const [lastFuelConsumption, setLastFuelConsumption] = useState("0 km/l");
 
   useEffect(() => {
-    if (!selectedVehicle) {
+    if (!selectedVehicle || !currentUser) {
       return;
     }
 
+    const userEmail = currentUser.email;
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
     const currentMonth = currentDate.getMonth();
 
-    const records = refuelRecords[selectedVehicle.vehicleName] || [];
+    // Access mileage records for the selected vehicle and current user
+    const records =
+      refuelRecords[userEmail]?.[selectedVehicle.vehicleName] || [];
 
     // Filter records for the current month
     const monthlyRecords = records.filter((record) => {
@@ -28,12 +31,10 @@ const FuelInsights = ({ selectedVehicle }) => {
     });
 
     // Sort by date to get the most recent record
-    monthlyRecords.sort((a, b) => new Date(b.date) - new Date(a.date));
+    const latestRecord = records[records.length - 1]; // Last record in the array
 
-    if (monthlyRecords.length > 0) {
-      const latestRecord = monthlyRecords[0]; // Get the record closest to the current date
-
-      // Calculate mileage
+    if (latestRecord) {
+      // Calculate last fuel consumption
       const distance = parseFloat(latestRecord.distance) || 0;
       const fuelUsed = parseFloat(latestRecord.fuelUsed) || 0;
       const mileage = fuelUsed > 0 ? (distance / fuelUsed).toFixed(2) : "0";
@@ -58,7 +59,7 @@ const FuelInsights = ({ selectedVehicle }) => {
     } else {
       setAvgFuelConsumption("N/A");
     }
-  }, [selectedVehicle, refuelRecords]);
+  }, [selectedVehicle, refuelRecords, currentUser]);
 
   return (
     <View className="justify-center items-center mt-5 w-full">

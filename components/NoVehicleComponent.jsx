@@ -11,7 +11,7 @@ const NoVehicleComponent = () => {
       }
 
   return (
-    <View className="flex justify-center items-center mt-48">
+    <View className="flex justify-center items-center">
       <Image source={require('../assets/road.jpg')} className="h-40 w-40 rounded-full mt-10"/>
       <Text className="text-sky-900 text-base font-medium text-center mt-5">Add a vehicle to start tracking its refuelling & performance</Text>
       <TouchableOpacity className="flex flex-row justify-center items-center h-14 w-36 bg-sky-900 mt-10 rounded-xl"
