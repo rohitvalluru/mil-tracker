@@ -17,6 +17,8 @@ import FuelDataList from "../components/FuelDataList";
 import DropdownComponent from "../components/DropdownComponent";
 import BarChartComponent from "../components/BarChartComponent";
 import FuelInsights from "../components/FuelInsights";
+import { ScrollView } from "react-native-gesture-handler";
+import { LogBox } from "react-native";
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -92,6 +94,9 @@ const HomeScreen = () => {
   );
 
   // Debugging: Log filtered records and selected vehicle
+useEffect(() => {
+  LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
+}, []);
 
   return (
     <SafeAreaView>
@@ -99,71 +104,66 @@ const HomeScreen = () => {
         colors={["#83a4d4", "#FFFDE4"]}
         className="h-screen w-screen"
       >
-        <FlatList
-          data={[]}
-          renderItem={null} // No need to render items if it's just for layout purposes
-          ListHeaderComponent={() => (
-            <View className="flex justify-center items-center mt-10">
-              <Image
-                source={require("../assets/Hugosave.webp")}
-                className="h-16 w-16 rounded-full"
-              />
-              <Text className="text-2xl text-red-600 font-semibold mt-5">
-                Hi {currentUser.name} ,
-              </Text>
-              <Text className="text-xl text-sky-900 font-medium text-center mt-5">
-                {lastVehicle
-                  ? "Here is everything about your vehicle"
-                  : "Track your miles towards a prosperous financial journey"}
-              </Text>
-              {lastVehicle ? (
-                <>
-                  <DropdownComponent
-                    type="userVehicle"
-                    onChangeValue={handleVehicleSelection}
-                  />
-                  {selectedVehicle && (
-                    <View className="h-44 w-80 bg-slate-500 rounded-2xl border-4 border-white">
-                      <Image
-                        source={{ uri: selectedVehicle.imageUri || "" }}
-                        className="h-full w-full rounded-2xl"
-                        resizeMode="cover"
-                      />
-                    </View>
-                  )}
-                  <FuelInsights selectedVehicle={selectedVehicle} />
-                  <TouchableOpacity
-                    className="flex flex-row justify-center items-center h-14 w-40 bg-sky-900 mt-10 rounded-xl"
-                    onPress={handleAddVehicleHome}
-                  >
-                    <Text className="text-white text-base font-semibold mr-2">
-                      Add Refuelling
-                    </Text>
-                    <AntDesign name="arrowright" size={18} color="white" />
-                  </TouchableOpacity>
-                  {selectedVehicle && (
-                    <View className="w-full justify-center items-center">
-                      {fuelRecords.length > 0 && (
-                        <View className="mt-10">
-                          <Text className="text-lg font-semibold text-center text-sky-800">
-                            Refuelling history
-                          </Text>
-                          <FuelDataList records={fuelRecords.slice(0, 5)} />
-                        </View>
-                      )}
-                      <View className="h-96">
-                        <BarChartComponent selectedVehicle={selectedVehicle} />
+        <ScrollView contentContainerStyle={styles.scrollViewContent}>
+          <View className="flex justify-center items-center mt-10">
+            <Image
+              source={require("../assets/Hugosave.webp")}
+              className="h-16 w-16 rounded-full"
+            />
+            <Text className="text-2xl text-red-600 font-semibold mt-5">
+              Hi {currentUser.name} ,
+            </Text>
+            <Text className="text-xl text-sky-900 font-medium text-center mt-5">
+              {lastVehicle
+                ? "Here is everything about your vehicle"
+                : "Track your miles towards a prosperous financial journey"}
+            </Text>
+            {lastVehicle ? (
+              <>
+                <DropdownComponent
+                  type="userVehicle"
+                  onChangeValue={handleVehicleSelection}
+                />
+                {selectedVehicle && (
+                  <View className="h-44 w-80 bg-slate-500 rounded-2xl border-4 border-white">
+                    <Image
+                      source={{ uri: selectedVehicle.imageUri || "" }}
+                      className="h-full w-full rounded-2xl"
+                      resizeMode="cover"
+                    />
+                  </View>
+                )}
+                <FuelInsights selectedVehicle={selectedVehicle} />
+                <TouchableOpacity
+                  className="flex flex-row justify-center items-center h-14 w-40 bg-sky-900 mt-10 rounded-xl"
+                  onPress={handleAddVehicleHome}
+                >
+                  <Text className="text-white text-base font-semibold mr-2">
+                    Add Refuelling
+                  </Text>
+                  <AntDesign name="arrowright" size={18} color="white" />
+                </TouchableOpacity>
+                {selectedVehicle && (
+                  <View className="w-full justify-center items-center">
+                    {fuelRecords.length > 0 && (
+                      <View className="mt-10">
+                        <Text className="text-lg font-semibold text-center text-sky-800">
+                          Refuelling history
+                        </Text>
+                        <FuelDataList records={fuelRecords.slice(0, 5)} />
                       </View>
+                    )}
+                    <View className="h-96">
+                      <BarChartComponent selectedVehicle={selectedVehicle} />
                     </View>
-                  )}
-                </>
-              ) : (
-                <NoVehicleComponent />
-              )}
-            </View>
-          )}
-          contentContainerStyle={styles.scrollViewContent}
-        />
+                  </View>
+                )}
+              </>
+            ) : (
+              <NoVehicleComponent />
+            )}
+          </View>
+        </ScrollView>
       </LinearGradient>
     </SafeAreaView>
   );

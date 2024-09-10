@@ -92,7 +92,9 @@ const DropdownComponent = ({ type = "vehicleType", onChangeValue }) => {
         textStyle={{
           fontSize: 16,
         }}
-        placeholder="Select an option"
+        placeholder={
+          type === "userVehicle" ? "Select Vehicle" : "Select Vehicle Type"
+        }
       />
     </View>
   );
