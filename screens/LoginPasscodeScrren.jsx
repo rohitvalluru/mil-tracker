@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, TextInput, Alert } from "react-native";
+import { View, Text, TouchableOpacity, TextInput, Alert, KeyboardAvoidingView, ScrollView, Platform } from "react-native";
 import React, { useState, useRef } from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -34,7 +34,7 @@ const LoginPasscodeScreen = ({ setIsAuthenticated }) => {
       setCurrentUser(user);
       Alert.alert("Success", "You are successfully logged in!");
       setIsAuthenticated(true);
-    
+
       navigation.navigate("BottomTabs");
       // Navigate to the next screen or perform additional actions
     } else {
@@ -48,38 +48,45 @@ const LoginPasscodeScreen = ({ setIsAuthenticated }) => {
         colors={["#83a4d4", "#FFFDE4"]}
         className="h-screen w-screen"
       >
-        <View className="justify-center items-center mt-12">
-          <Text className="text-2xl font-medium text-red-600 mt-10">
-            Welcome back!
-          </Text>
-          <Text className="mt-16 text-lg font-medium text-sky-900">
-            Enter your 4-Digit Passcode
-          </Text>
-          <View className="max-w-sm mx-auto mt-10">
-            <View className="flex flex-row mb-2 space-x-2">
-              {inputRefs.map((inputRef, index) => (
-                <TextInput
-                  key={index}
-                  ref={inputRef}
-                  className="w-20 h-16 py-3 text-xl font-extrabold text-center text-gray-900 bg-white border border-gray-300 rounded-lg"
-                  maxLength={1}
-                  keyboardType="number-pad"
-                  onChangeText={(value) => handleInputChange(value, index)}
-                  value={passcode[index]}
-                />
-              ))}
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={{ flex: 1 }}
+        >
+          <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+            <View className="justify-center items-center mt-12">
+              <Text className="text-2xl font-medium text-red-600 mt-10">
+                Welcome back!
+              </Text>
+              <Text className="mt-16 text-lg font-medium text-sky-900">
+                Enter your 4-Digit Passcode
+              </Text>
+              <View className="max-w-sm mx-auto mt-10">
+                <View className="flex flex-row mb-2 space-x-2">
+                  {inputRefs.map((inputRef, index) => (
+                    <TextInput
+                      key={index}
+                      ref={inputRef}
+                      className="w-20 h-16 py-3 text-xl font-extrabold text-center text-gray-900 bg-white border border-gray-300 rounded-lg"
+                      maxLength={1}
+                      keyboardType="number-pad"
+                      onChangeText={(value) => handleInputChange(value, index)}
+                      value={passcode[index]}
+                    />
+                  ))}
+                </View>
+              </View>
+              <Text className="mt-5 text-base font-normal">
+                Just checking it's really you!
+              </Text>
+              <TouchableOpacity
+                onPress={handleSubmit}
+                className="h-12 bg-sky-900 w-64 rounded-xl justify-center items-center mt-16"
+              >
+                <Text className="text-white font-semibold text-xl">Submit</Text>
+              </TouchableOpacity>
             </View>
-          </View>
-          <Text className="mt-5 text-base font-normal">
-            Just checking it's really you!
-          </Text>
-          <TouchableOpacity
-            onPress={handleSubmit}
-            className="h-12 bg-sky-900 w-64 rounded-xl justify-center items-center mt-16"
-          >
-            <Text className="text-white font-semibold text-xl">Submit</Text>
-          </TouchableOpacity>
-        </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
       </LinearGradient>
     </SafeAreaView>
   );

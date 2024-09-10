@@ -4,8 +4,8 @@ import useStore from "../store/store";
 
 const Card = ({ vehicleName, engineCC, vehicleType, imageUri }) => {
   return (
-    <View className="justify-center items-center mt-10">
-      <View className="bg-gray-200 h-52 w-80 rounded-xl bg-cover">
+    <View className="justify-center items-center mt-8">
+      <View className="bg-gray-200 h-52 w-80 bg-cover rounded-xl">
         <Image source={{ uri: imageUri }} className="h-40 w-80" />
         <View className="flex flex-row justify-center items-center px-4">
           <View className="flex-1">

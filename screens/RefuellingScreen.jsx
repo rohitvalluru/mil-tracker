@@ -53,12 +53,12 @@ const RefuellingScreen = () => {
         colors={["#83a4d4", "#FFFDE4"]}
         className="h-screen w-screen"
       >
-        <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: 100 }}>
-          <View className="justify-center items-center">
-            <Text className="text-2xl font-bold m-4 text-center text-sky-800">
-              Fuel Spends
-            </Text>
-            <View className="border-t-2 border-gray-300 my-4 w-full -mt-1"></View>
+        <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom:100}}>
+          <Text className="text-2xl font-bold m-4 text-center text-sky-800">
+            Fuel Spends
+          </Text>
+          <View className="border-t-2 border-gray-300 my-4 w-full -mt-1"></View>
+          <View className="flex-1 justify-center items-center">
             {fuelRecords.length > 0 && (
               <View className="mt-5 justify-center items-center">
                 <FuelDataList

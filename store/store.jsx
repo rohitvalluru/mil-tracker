@@ -38,10 +38,17 @@ const useStore = create(
         }
         const userEmail = currentUser.email;
 
+        const trimmedVehicle = {
+          ...vehicle,
+          vehicleName: vehicle.vehicleName.trim(),
+        };
         set((state) => ({
           userVehicles: {
             ...state.userVehicles,
-            [userEmail]: [...(state.userVehicles[userEmail] || []), vehicle],
+            [currentUser.email]: [
+              ...(state.userVehicles[currentUser.email] || []),
+              trimmedVehicle,
+            ],
           },
         }));
       },
@@ -129,7 +136,12 @@ const useStore = create(
         }
       },
 
-      setSelectedVehicle: (vehicle) => set({ selectedVehicle: vehicle }),
+      setSelectedVehicle: (vehicle) => {
+        console.log("Setting selected vehicle:", vehicle);
+        set((state) => ({
+          selectedVehicle: vehicle,
+        }));
+      },
 
       clearVehicleRecords: () => {
         const currentUser = get().currentUser;

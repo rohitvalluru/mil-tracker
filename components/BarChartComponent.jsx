@@ -115,14 +115,7 @@ const App = () => {
   };
 
   const renderChart = (data, title, maxValueFunc, isMileageChart = false) => {
-    if (!selectedVehicle) {
-      return (
-        <Text style={styles.selectVehicleText}>
-          Please select a vehicle to view data
-        </Text>
-      );
-    }
-
+    
     if (data.length === 0 || data.every((item) => item.value === 0)) {
       return <Text className="text-transparent">No data available</Text>;
     }

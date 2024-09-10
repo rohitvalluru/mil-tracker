@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View } from "react-native";
+import { View, Text } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import useStore from "../store/store";
 
@@ -12,7 +12,7 @@ const DropdownComponent = ({ type = "vehicleType", onChangeValue }) => {
 
   useEffect(() => {
     if (type === "vehicleType") {
-      // If type is 'vehicleType', show vehicle types
+      // Show vehicle types
       setItems([
         { label: "2 Wheeler", value: "2 Wheeler" },
         { label: "3 Wheeler", value: "3 Wheeler" },
@@ -20,42 +20,56 @@ const DropdownComponent = ({ type = "vehicleType", onChangeValue }) => {
         { label: "Other", value: "Other" },
       ]);
     } else if (type === "userVehicle" && currentUser) {
-      // If type is 'userVehicle', show only the current user's vehicles
+      // Show only the current user's vehicles
       const userVehiclesList = userVehicles[currentUser.email] || [];
       const vehicleOptions = userVehiclesList.map((vehicle) => ({
-        label: vehicle.vehicleName,
-        value: vehicle.vehicleName,
+        label: vehicle.vehicleName.trim(), // Trim whitespace
+        value: vehicle.vehicleName.trim(),
       }));
       setItems(vehicleOptions);
     }
   }, [type, userVehicles, currentUser]);
 
+  const handleValueChange = (selectedValue) => {
+    console.log("handleValueChange called with:", selectedValue);
+    setValue(selectedValue); // Update the dropdown value
+    console.log("After setValue, updated state value is:", selectedValue);
+
+    if (type === "userVehicle") {
+      const userVehiclesList = userVehicles[currentUser.email] || [];
+      const selectedVehicle = userVehiclesList.find(
+        (vehicle) => vehicle.vehicleName.trim() === selectedValue.trim()
+      );
+
+      if (selectedVehicle) {
+        console.log("Selected vehicle before updating state:", selectedVehicle);
+        setSelectedVehicle(selectedVehicle); // Only update if selectedVehicle is valid
+        console.log("Vehicle selected after state update:", selectedVehicle);
+      } else {
+        console.log("No valid vehicle found for selection.");
+      }
+
+      if (onChangeValue) {
+        onChangeValue(selectedValue); // Trigger the onChangeValue callback
+      }
+    } else {
+      setVehicleType(selectedValue); // Update Zustand state for vehicle type
+
+      if (onChangeValue) {
+        onChangeValue(selectedValue); // Trigger the onChangeValue callback for vehicle type
+      }
+    }
+  };
+
   return (
     <View className="m-5 w-80">
       <DropDownPicker
         open={open}
-        value={value} // Adjust as needed
+        value={value} // Bind the selected value to the dropdown
         items={items}
         setOpen={setOpen}
-        setValue={(callback) => {
-          const selectedValue = callback();
-          if (type === "userVehicle") {
-            const userVehiclesList = userVehicles[currentUser.email] || [];
-            setSelectedVehicle(
-              userVehiclesList.find(
-                (vehicle) => vehicle.vehicleName === selectedValue
-              )
-            ); // Update Zustand state for vehicle selection
-            if (onChangeValue) {
-              onChangeValue(selectedValue); // Trigger the onChangeValue callback
-            }
-          } else {
-            setVehicleType(selectedValue); // Update Zustand state for vehicle type
-            if (onChangeValue) {
-              onChangeValue(selectedValue); // Trigger the onChangeValue callback for vehicle type
-            }
-          }
-        }}
+        setValue={setValue} // Directly use setValue to update the state
+        onSelectItem={(item) => handleValueChange(item.value)} // Handle item selection
         setItems={setItems}
         containerStyle={{ height: 40 }}
         style={{
@@ -70,9 +84,6 @@ const DropdownComponent = ({ type = "vehicleType", onChangeValue }) => {
           borderWidth: 1,
           borderRadius: 8,
         }}
-        placeholder={
-          type === "userVehicle" ? "Select Vehicle" : "Select Vehicle Type"
-        }
         placeholderStyle={{
           color: "gray",
           fontSize: 17,
@@ -81,6 +92,7 @@ const DropdownComponent = ({ type = "vehicleType", onChangeValue }) => {
         textStyle={{
           fontSize: 16,
         }}
+        placeholder="Select an option"
       />
     </View>
   );

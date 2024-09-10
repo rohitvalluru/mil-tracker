@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import InputComponent from "../components/InputComponent";
@@ -66,67 +68,59 @@ const AddVehicle = () => {
 
   return (
     <SafeAreaView>
-      <View className="bg-red-500">
-        <LinearGradient
-          style={styles.container}
-          colors={["#83a4d4", "#FFFDE4"]}
-          className="mt-10 bg-white w-full h-full"
+      <LinearGradient
+        colors={["#83a4d4", "#FFFDE4"]}
+        className="h-screen w-screen"
+      >
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={{ flex: 1 }}
         >
-          <View className="flex justify-center items-center">
-            <Text className="text-sky-900 text-2xl font-medium text-center mt-5">
-              Add Vehicle
-            </Text>
-            <CircularImagePicker />
-            <InputComponent
-              placeholder="Vehicle Name"
-              value={vehicleName}
-              onChangeText={setVehicleName}
-            />
-            <DropdownComponent useLocalStorage={false} />
-            <InputComponent
-              placeholder="Engine CC"
-              keyboardType="numeric"
-              value={engineCC}
-              onChangeText={setEngineCC}
-            />
-            <View className="flex flex-row justify-between w-80 mt-14">
-              <TouchableOpacity
-                className="flex flex-row justify-center items-center h-14 w-36 text-sky-900 rounded-xl border"
-                onPress={handleCancel}
-              >
-                <Text className="text-sky-900 text-base font-semibold">
-                  Cancel
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                className={`flex flex-row justify-center items-center h-14 w-36 rounded-xl ${
-                  isButtonEnabled ? "bg-sky-900" : "bg-gray-400"
-                }`}
-                disabled={!isButtonEnabled}
-                onPress={handleAddVehicle}
-              >
-                <Text className="text-white text-base font-semibold">
-                  Add Vehicle
-                </Text>
-              </TouchableOpacity>
+          <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom:100 }}>
+            <View className="flex-1 justify-center items-center">
+              <Text className="text-sky-900 text-2xl font-medium text-center mt-5">
+                Add Vehicle
+              </Text>
+              <CircularImagePicker />
+              <InputComponent
+                placeholder="Vehicle Name"
+                value={vehicleName}
+                onChangeText={setVehicleName}
+              />
+              <DropdownComponent useLocalStorage={false} />
+              <InputComponent
+                placeholder="Engine CC"
+                keyboardType="numeric"
+                value={engineCC}
+                onChangeText={setEngineCC}
+              />
+              <View className="flex flex-row justify-between w-80 mt-14">
+                <TouchableOpacity
+                  className="flex flex-row justify-center items-center h-14 w-36 text-sky-900 rounded-xl border"
+                  onPress={handleCancel}
+                >
+                  <Text className="text-sky-900 text-base font-semibold">
+                    Cancel
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  className={`flex flex-row justify-center items-center h-14 w-36 rounded-xl ${
+                    isButtonEnabled ? "bg-sky-900" : "bg-gray-400"
+                  }`}
+                  disabled={!isButtonEnabled}
+                  onPress={handleAddVehicle}
+                >
+                  <Text className="text-white text-base font-semibold">
+                    Add Vehicle
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
-        </LinearGradient>
-      </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </LinearGradient>
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "white",
-    width: "100%",
-    height: "100%",
-    borderTopLeftRadius: 45, // Adjust as needed
-    borderTopRightRadius: 45, // Adjust as needed
-    borderBottomLeftRadius: 15, // Adjust as needed
-    borderBottomRightRadius: 15, // Adjust as needed
-  },
-});
 
 export default AddVehicle;

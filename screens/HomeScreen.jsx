@@ -44,9 +44,21 @@ const HomeScreen = () => {
 
   // Handle vehicle selection from dropdown and store it globally
   const handleVehicleSelection = (vehicleName) => {
-    const vehicle = vehicles.find((v) => v.vehicleName === vehicleName);
-    setSelectedVehicle(vehicle); // Set the selected vehicle globally in the store
-    setIsUserSelection(true); // Set this to true to indicate user made a selection
+    console.log("Vehicle selected from HomeDropdown:", vehicleName);
+
+    const vehicle = vehicles.find(
+      (v) => v.vehicleName.trim() === vehicleName.trim()
+    );
+
+    if (vehicle) {
+      setSelectedVehicle(vehicle);
+      setIsUserSelection(true); // Ensure manual selection is registered
+
+      // Log the selected vehicle
+      console.log("Vehicle found and set in state:", vehicle);
+    } else {
+      console.log("No matching vehicle found for:", vehicleName);
+    }
   };
 
   const handleAddVehicleHome = () => {
@@ -166,4 +178,3 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 });
-
