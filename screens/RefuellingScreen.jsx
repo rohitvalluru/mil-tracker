@@ -14,8 +14,11 @@ const RefuellingScreen = () => {
     refuelRecords = {},
     clearrefuelrecordsforvehicle,
     selectedVehicle,
+    currentUser,
+    userVehicles,
   } = useStore();
 
+  const vehicles = currentUser ? userVehicles[currentUser.email] || [] : [];
   // Get records for the selected vehicle
   const records = selectedVehicle
     ? refuelRecords[selectedVehicle.vehicleName] || []
@@ -53,33 +56,39 @@ const RefuellingScreen = () => {
         colors={["#83a4d4", "#FFFDE4"]}
         className="h-screen w-screen"
       >
-        <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom:100}}>
+        <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: 100 }}>
           <Text className="text-2xl font-bold m-4 text-center text-sky-800">
             Fuel Spends
           </Text>
           <View className="border-t-2 border-gray-300 my-4 w-full -mt-1"></View>
           <View className="flex-1 justify-center items-center">
-            {fuelRecords.length > 0 && (
-              <View className="mt-5 justify-center items-center">
-                <FuelDataList
-                  records={fuelRecords}
-                  selectedVehicle={selectedVehicle}
-                />
-                <TouchableOpacity
-                  className="flex flex-row justify-center items-center h-10 w-40 bg-red-600 mt-10 rounded-lg"
-                  onPress={handleClearRecords}
-                >
-                  <MaterialCommunityIcons
-                    name="delete-empty"
-                    size={24}
-                    color="white"
-                  />
-                  <Text className="text-white text-base font-semibold px-2 mr-2">
-                    Clear Records
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            )}
+            <View className="mt-5 justify-center items-center">
+              {vehicles.length > 0 && (
+                <>
+                  {fuelRecords.length > 0 && (
+                    <View className="mt-5 justify-center items-center">
+                      <FuelDataList
+                        records={fuelRecords}
+                        selectedVehicle={selectedVehicle}
+                      />
+                      <TouchableOpacity
+                        className="flex flex-row justify-center items-center h-10 w-40 bg-red-600 mt-10 rounded-lg"
+                        onPress={handleClearRecords}
+                      >
+                        <MaterialCommunityIcons
+                          name="delete-empty"
+                          size={24}
+                          color="white"
+                        />
+                        <Text className="text-white text-base font-semibold px-2 mr-2">
+                          Clear Records
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  )}
+                </>
+              )}
+            </View>
             <TouchableOpacity
               className="flex flex-row justify-center items-center h-14 w-44 bg-sky-900 mt-10 rounded-xl"
               onPress={() => setModalVisible(true)}

@@ -1,8 +1,8 @@
-import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
-import HomeScreen from '../screens/HomeScreen';
-import AddVehicle from '../screens/AddVehicle';
-import VehicleAddedScreen from '../screens/VehicleAddedScreen';
+import React from "react";
+import { createStackNavigator } from "@react-navigation/stack";
+import HomeScreen from "../screens/HomeScreen";
+import AddVehicle from "../screens/AddVehicle";
+import VehicleAddedScreen from "../screens/VehicleAddedScreen";
 
 const HomeStack = createStackNavigator();
 

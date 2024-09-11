@@ -6,6 +6,7 @@ import LoginPasscodeScreen from "../screens/LoginPasscodeScrren";
 import EnterPasscodeScreen from "../screens/EnterPasscodeScreen";
 import CreateAccountScreen from "../screens/CreateAccountScreen";
 import BottomTabNavigator from "./BottomTabNavigator";
+import HomeScreen from "../screens/HomeScreen";
 
 const Stack = createNativeStackNavigator();
 

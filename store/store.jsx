@@ -28,7 +28,21 @@ const useStore = create(
       setEngineCC: (cc) => set({ engineCC: cc }),
       setVehicleType: (type) => set({ vehicleType: type }),
       setImageUri: (uri) => set({ imageUri: uri }),
+
       setCurrentUser: (user) => set({ currentUser: user }),
+      
+      resetUserData: () =>
+        set((state) => ({
+          selectedVehicle: null,
+          refuelRecords: {
+            ...state.refuelRecords, // Keep other users' refuel records intact
+            [state.currentUser.email]: [], // Clear only the current user's refuel records
+          },
+          userVehicles: {
+            ...state.userVehicles, // Keep other users' vehicles intact
+            [state.currentUser.email]: [], // Clear only the current user's vehicles
+          },
+        })),
 
       addVehicle: (vehicle) => {
         const currentUser = get().currentUser;

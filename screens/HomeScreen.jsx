@@ -19,6 +19,7 @@ import BarChartComponent from "../components/BarChartComponent";
 import FuelInsights from "../components/FuelInsights";
 import { ScrollView } from "react-native-gesture-handler";
 import { LogBox } from "react-native";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -71,6 +72,7 @@ const HomeScreen = () => {
     }
   };
 
+
   useEffect(() => {
     // If the user has not made a selection, set the default vehicle
     if (
@@ -94,9 +96,9 @@ const HomeScreen = () => {
   );
 
   // Debugging: Log filtered records and selected vehicle
-useEffect(() => {
-  LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
-}, []);
+  useEffect(() => {
+    LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
+  }, []);
 
   return (
     <SafeAreaView>
@@ -111,7 +113,7 @@ useEffect(() => {
               className="h-16 w-16 rounded-full"
             />
             <Text className="text-2xl text-red-600 font-semibold mt-5">
-              Hi {currentUser.name} ,
+              Hi {currentUser?.name}
             </Text>
             <Text className="text-xl text-sky-900 font-medium text-center mt-5">
               {lastVehicle
@@ -162,6 +164,15 @@ useEffect(() => {
             ) : (
               <NoVehicleComponent />
             )}
+            {/* <TouchableOpacity
+              className="flex flex-row justify-center items-center h-10 w-36 bg-red-600 mt-10 rounded-lg"
+              onPress={handleLogout}
+            >
+              <MaterialIcons name="logout" size={24} color="black" />
+              <Text className="text-white text-base font-semibold px-2 mr-2">
+                Logout
+              </Text>
+            </TouchableOpacity> */}
           </View>
         </ScrollView>
       </LinearGradient>
