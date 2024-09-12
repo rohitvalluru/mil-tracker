@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text } from "react-native";
+import { View, Text, Platform } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import useStore from "../store/store";
 
@@ -62,7 +62,13 @@ const DropdownComponent = ({ type = "vehicleType", onChangeValue }) => {
   };
 
   return (
-    <View className="m-5 w-80">
+    <View
+      className="m-5 w-80"
+      style={{
+        zIndex: open ? 1000 : 1,
+        ...(Platform.OS === "ios" && { zIndex: open ? 1000 : 1 }),
+      }}
+    >
       <DropDownPicker
         open={open}
         value={value} // Bind the selected value to the dropdown

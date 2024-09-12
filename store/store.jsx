@@ -157,6 +157,8 @@ const useStore = create(
         }));
       },
 
+      logout: () => set({ currentUser: null }),
+
       clearVehicleRecords: () => {
         const currentUser = get().currentUser;
         if (!currentUser) {

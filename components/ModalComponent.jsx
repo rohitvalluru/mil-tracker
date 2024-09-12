@@ -78,6 +78,7 @@ const ModalComponent = ({ visible, onClose }) => {
 
           <TextInput
             placeholder="Money Spent in Rs."
+            placeholderTextColor="black"
             keyboardType="numeric"
             value={moneySpent}
             onChangeText={setMoneySpent}
@@ -86,6 +87,7 @@ const ModalComponent = ({ visible, onClose }) => {
 
           <TextInput
             placeholder="Liters of Petrol"
+            placeholderTextColor="black"
             keyboardType="numeric"
             value={liters}
             onChangeText={setLiters}

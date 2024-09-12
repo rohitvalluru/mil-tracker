@@ -79,7 +79,9 @@ const AddVehicle = () => {
           behavior={Platform.OS === "ios" ? "padding" : "height"}
           style={{ flex: 1 }}
         >
-          <ScrollView>
+          <ScrollView
+            contentContainerStyle={{ flexGrow: 1, paddingBottom: 50 }}
+          >
             <View style={styles.container}>
               <Text style={styles.header}>Add Vehicle</Text>
               <CircularImagePicker />
@@ -141,6 +143,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     width: "80%",
     marginTop: 20,
+    gap: 12,
   },
   button: {
     height: 56,
@@ -152,6 +155,7 @@ const styles = StyleSheet.create({
   cancelButton: {
     borderColor: "#003366",
     borderWidth: 1,
+    backgroundColor: "#FF0000",
   },
   enabledButton: {
     backgroundColor: "#003366",

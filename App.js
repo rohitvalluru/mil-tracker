@@ -49,7 +49,14 @@ const App = () => {
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           {isAuthenticated ? (
-            <Stack.Screen name="BottomTabs" component={BottomTabNavigator} />
+            <Stack.Screen name="BottomTabs">
+              {(props) => (
+                <BottomTabNavigator
+                  {...props}
+                  setIsAuthenticated={setIsAuthenticated} // Pass setIsAuthenticated here
+                />
+              )}
+            </Stack.Screen>
           ) : (
             <Stack.Screen name="AuthStack">
               {(props) => (

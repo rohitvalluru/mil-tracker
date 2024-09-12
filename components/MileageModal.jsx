@@ -74,6 +74,7 @@ const MileageModal = ({ visible, onClose, onSave }) => {
             value={distance}
             onChangeText={setDistance}
             placeholder="Distance Traveled (km)"
+            placeholderTextColor="black"
             keyboardType="numeric"
             className="border rounded-md p-2 mb-4"
           />
@@ -82,6 +83,7 @@ const MileageModal = ({ visible, onClose, onSave }) => {
             onChangeText={setFuelUsed}
             placeholder="Fuel Used (liters)"
             keyboardType="numeric"
+            placeholderTextColor="black"
             className="border rounded-md p-2 mb-4"
           />
 

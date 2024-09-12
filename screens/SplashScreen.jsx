@@ -1,7 +1,5 @@
 import { View, Text, SafeAreaView, Image, StyleSheet } from "react-native";
 import React, { useEffect, useState } from "react";
-import { useNavigation } from "@react-navigation/native";
-import useStore from "../store/store";
 
 const SplashScreen = () => {
   return (

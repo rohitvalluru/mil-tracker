@@ -6,7 +6,7 @@ const InputComponent = ({ placeholder, keyboardType = 'default', value, onChange
   return (
     <View className="m-5">
       <TextInput
-        className={`h-12 w-80 border ${isFocused ? 'border-blue-600' : 'border-gray-400'} rounded-md px-3 mb-2 text-base mt-5`}
+        className={`h-12 w-80 border ${isFocused ? 'border-blue-600' : 'border-gray-400'} rounded-md px-3 mb-2 text-base mt-5 bg-white`}
         placeholder={placeholder}
         value={value}
         onChangeText={onChangeText}

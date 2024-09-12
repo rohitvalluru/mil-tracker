@@ -38,7 +38,14 @@ const AuthStackNavigator = ({ initialRouteName, setIsAuthenticated }) => {
         component={EnterPasscodeScreen}
       />
       <Stack.Screen name="Signup" component={Signup} />
-      <Stack.Screen name="BottomTabs" component={BottomTabNavigator} />
+      <Stack.Screen name="BottomTabs">
+        {(props) => (
+          <BottomTabNavigator
+            {...props}
+            setIsAuthenticated={setIsAuthenticated}
+          />
+        )}
+      </Stack.Screen>
     </Stack.Navigator>
   );
 };

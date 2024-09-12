@@ -19,9 +19,9 @@ import BarChartComponent from "../components/BarChartComponent";
 import FuelInsights from "../components/FuelInsights";
 import { ScrollView } from "react-native-gesture-handler";
 import { LogBox } from "react-native";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 
-const HomeScreen = () => {
+const HomeScreen = ({ setIsAuthenticated }) => {
   const navigation = useNavigation();
   const {
     refuelRecords,
@@ -72,7 +72,6 @@ const HomeScreen = () => {
     }
   };
 
-
   useEffect(() => {
     // If the user has not made a selection, set the default vehicle
     if (
@@ -100,6 +99,14 @@ const HomeScreen = () => {
     LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
   }, []);
 
+  const logout = useStore((state) => state.logout); // Access the logout function from the store
+
+  const handleLogout = () => {
+    logout(); // Clear user session
+    setIsAuthenticated(false);
+    navigation.replace("UserLoginScreen"); // Navigate to the login screen
+  };
+
   return (
     <SafeAreaView>
       <LinearGradient
@@ -108,10 +115,23 @@ const HomeScreen = () => {
       >
         <ScrollView contentContainerStyle={styles.scrollViewContent}>
           <View className="flex justify-center items-center mt-10">
-            <Image
-              source={require("../assets/Hugosave.webp")}
-              className="h-16 w-16 rounded-full"
-            />
+            <View className="flex flex-row justify-center items-center relative">
+              <TouchableOpacity
+                className="bg-red-500 h-10 w-10 justify-center items-center rounded-full absolute right-40"
+                onPress={handleLogout}
+              >
+                <SimpleLineIcons
+                  name="logout"
+                  size={20}
+                  color="white"
+                  className="font-bold"
+                />
+              </TouchableOpacity>
+              <Image
+                source={require("../assets/Hugosave.webp")}
+                className="h-16 w-16 rounded-full"
+              />
+            </View>
             <Text className="text-2xl text-red-600 font-semibold mt-5">
               Hi {currentUser?.name}
             </Text>
@@ -164,15 +184,6 @@ const HomeScreen = () => {
             ) : (
               <NoVehicleComponent />
             )}
-            {/* <TouchableOpacity
-              className="flex flex-row justify-center items-center h-10 w-36 bg-red-600 mt-10 rounded-lg"
-              onPress={handleLogout}
-            >
-              <MaterialIcons name="logout" size={24} color="black" />
-              <Text className="text-white text-base font-semibold px-2 mr-2">
-                Logout
-              </Text>
-            </TouchableOpacity> */}
           </View>
         </ScrollView>
       </LinearGradient>
@@ -185,7 +196,7 @@ export default HomeScreen;
 const styles = StyleSheet.create({
   scrollViewContent: {
     flexGrow: 1,
-    paddingBottom: 250,
+    paddingBottom: 280,
     alignItems: "center",
   },
 });
